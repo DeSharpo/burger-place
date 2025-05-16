@@ -13,3 +13,24 @@
 	text-align: center;
 	list-style-type: none;
 }
+
+.scroll_container {
+	height: 400px;
+	margin-top: 40px;
+	padding-right: 10px;
+	overflow-y: auto;
+}
+
+.list {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 16px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.item {
+	margin-bottom: 8px;
+	font-size: 16px;
+}
