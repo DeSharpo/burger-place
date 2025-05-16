@@ -29,21 +29,21 @@ export const BurgerIngredients = ({ ingredients }) => {
 			</nav>
 
 			<div className={styles.scroll_container}>
-				<h2 className='text text_type_main-large mb-6'>Булки</h2>
+				<h2 className='text text_type_main-large mb-5'>Булки</h2>
 				<ul className={styles.list}>
 					{buns.map((item) => (
 						<IngredientCard key={item._id} item={item} />
 					))}
 				</ul>
 
-				<h2 className='text text_type_main-large mt-10 mb-6'>Соусы</h2>
+				<h2 className='text text_type_main-large mb-5 mt-15'>Соусы</h2>
 				<ul className={styles.list}>
 					{sauces.map((item) => (
 						<IngredientCard key={item._id} item={item} />
 					))}
 				</ul>
 
-				<h2 className='text text_type_main-large mt-10 mb-6'>Начинки</h2>
+				<h2 className='text text_type_main-large mb-5 mt-15'>Начинки</h2>
 				<ul className={styles.list}>
 					{mains.map((item) => (
 						<IngredientCard key={item._id} item={item} />

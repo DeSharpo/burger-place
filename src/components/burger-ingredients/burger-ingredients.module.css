@@ -15,7 +15,6 @@
 }
 
 .scroll_container {
-	height: 400px;
 	margin-top: 40px;
 	padding-right: 10px;
 	overflow-y: auto;
@@ -28,9 +27,4 @@
 	margin: 0;
 	padding: 0;
 	list-style: none;
-}
-
-.item {
-	margin-bottom: 8px;
-	font-size: 16px;
 }

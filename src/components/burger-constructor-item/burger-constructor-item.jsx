@@ -1,0 +1,28 @@
+import React from 'react';
+import styles from './burger-constructor-item.module.css';
+import { ingredientPropType } from '@utils/prop-types.js';
+import {
+	ConstructorElement,
+	DragIcon,
+} from '@ya.praktikum/react-developer-burger-ui-components';
+
+export const BurgerConstructorItem = ({ item, type, isLocked }) => {
+	let showDrag = !isLocked && !type;
+
+	return (
+		<div className={styles.constructor_element}>
+			<div className={styles.icon_wrapper}>{showDrag && <DragIcon />}</div>
+			<ConstructorElement
+				text={item.name}
+				price={item.price}
+				thumbnail={item.image}
+				type={type}
+				isLocked={isLocked}
+			/>
+		</div>
+	);
+};
+
+BurgerConstructorItem.propTypes = {
+	item: ingredientPropType.isRequired,
+};
