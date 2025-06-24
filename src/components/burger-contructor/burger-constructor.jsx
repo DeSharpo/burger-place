@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './burger-constructor.module.css';
 import * as PropTypes from 'prop-types';
 import { ingredientPropType } from '@utils/prop-types.js';
@@ -7,12 +7,19 @@ import {
 	Button,
 	CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Modal } from '@components/modal/modal';
+import { OrderDetails } from '@components/order-details/order-details';
 
 export const BurgerConstructor = ({ ingredients }) => {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
 	const top = ingredients[0];
 	const bottom = top;
 	const middle = ingredients.slice(1);
 	const summ = 610;
+
+	const openModal = () => setIsModalOpen(true);
+	const closeModal = () => setIsModalOpen(false);
 
 	return (
 		<section className={styles.burger_constructor}>
@@ -41,8 +48,16 @@ export const BurgerConstructor = ({ ingredients }) => {
 					<span className='text text_type_digits-medium'>{summ}</span>
 					<CurrencyIcon />
 				</div>
-				<Button htmlType='button'>Оформить заказ</Button>
+				<Button htmlType='button' onClick={openModal}>
+					Оформить заказ
+				</Button>
 			</div>
+
+			{isModalOpen && (
+				<Modal onClose={closeModal}>
+					<OrderDetails />
+				</Modal>
+			)}
 		</section>
 	);
 };

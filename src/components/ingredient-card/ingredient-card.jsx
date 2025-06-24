@@ -6,9 +6,14 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ingredientPropType } from '@utils/prop-types.js';
 
-export const IngredientCard = ({ item }) => {
+export const IngredientCard = ({ item, onClick }) => {
 	return (
-		<li className={styles.card}>
+		<div
+			className={styles.card}
+			role='button'
+			tabIndex={0}
+			onClick={() => onClick(item)}
+			onKeyDown={(e) => e.key === 'Escape' && onClick()}>
 			<img src={item.image} alt={item.name} />
 			<Counter count={1} size='default' extraClass='m-1' />
 			<div className={styles.price}>
@@ -20,7 +25,7 @@ export const IngredientCard = ({ item }) => {
 			<p className={`text text_type_main-default ${styles.name}`}>
 				{item.name}
 			</p>
-		</li>
+		</div>
 	);
 };
 
