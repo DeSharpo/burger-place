@@ -6,14 +6,14 @@ import {
 	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-export const BurgerConstructorItem = ({ item, type, isLocked }) => {
+export const BurgerConstructorItem = ({ item, type, isLocked, text }) => {
 	let showDrag = !isLocked && !type;
 
 	return (
 		<div className={styles.constructor_element}>
 			<div className={styles.icon_wrapper}>{showDrag && <DragIcon />}</div>
 			<ConstructorElement
-				text={item.name}
+				text={text}
 				price={item.price}
 				thumbnail={item.image}
 				type={type}
