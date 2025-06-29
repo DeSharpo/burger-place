@@ -1,0 +1,38 @@
+.modal {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 1000;
+	max-width: 720px;
+	max-height: 650px;
+	padding: 40px 40px 50px;
+	color: white;
+	background: #1c1c21;
+	border-radius: 40px;
+	box-shadow: 0 0 30px rgb(0 0 0 / 50%);
+	transform: translate(-50%, -50%);
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.closeButton {
+	padding: 0;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 999;
+	width: 100vw;
+	height: 100vh;
+	background: rgb(0 0 0 / 60%);
+}
