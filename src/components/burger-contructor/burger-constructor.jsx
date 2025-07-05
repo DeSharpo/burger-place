@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+//import { useDispatch, useSelector } from 'react-redux';
 import styles from './burger-constructor.module.css';
 import * as PropTypes from 'prop-types';
 import { ingredientPropType } from '@utils/prop-types.js';
-import { BurgerConstructorItem } from '@components/burger-constructor-item/burger-constructor-item';
+//import { BurgerConstructorItem } from '@components/burger-constructor-item/burger-constructor-item';
 import {
 	Button,
 	CurrencyIcon,
@@ -10,12 +11,11 @@ import {
 import { Modal } from '@components/modal/modal';
 import { OrderDetails } from '@components/order-details/order-details';
 
-export const BurgerConstructor = ({ ingredients }) => {
+export const BurgerConstructor = () => {
+	//const { ingredients } = useSelector((state) => state.burgerIngredients);
+
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
-	const top = ingredients[0];
-	const bottom = top;
-	const middle = ingredients.slice(1);
 	const summ = 610;
 
 	const openModal = () => setIsModalOpen(true);
@@ -23,7 +23,7 @@ export const BurgerConstructor = ({ ingredients }) => {
 
 	return (
 		<section className={styles.burger_constructor}>
-			<BurgerConstructorItem
+			{/* <BurgerConstructorItem
 				item={top}
 				type='top'
 				isLocked={true}
@@ -41,7 +41,7 @@ export const BurgerConstructor = ({ ingredients }) => {
 				type='bottom'
 				isLocked={true}
 				text={`${bottom.name} (низ)`}
-			/>
+			/> */}
 
 			<div className={styles.order_confirmation}>
 				<div className={styles.price}>
