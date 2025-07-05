@@ -6,23 +6,23 @@ import {
 	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-export const BurgerConstructorItem = ({ item, type, isLocked, text }) => {
-	let showDrag = !isLocked && !type;
-
+export const DraggableBurgerConstructorItem = ({ item, type, text }) => {
 	return (
 		<div className={styles.constructor_element}>
-			<div className={styles.icon_wrapper}>{showDrag && <DragIcon />}</div>
+			<div className={styles.icon_wrapper}>
+				<DragIcon />
+			</div>
 			<ConstructorElement
 				text={text}
 				price={item.price}
-				thumbnail={item.image || 'constructor-item-placeholder.png'}
+				thumbnail={item.image}
 				type={type}
-				isLocked={isLocked}
+				isLocked={false}
 			/>
 		</div>
 	);
 };
 
-BurgerConstructorItem.propTypes = {
+DraggableBurgerConstructorItem.propTypes = {
 	item: ingredientPropType.isRequired,
 };

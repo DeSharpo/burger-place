@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addIngredient } from '../../services/burger-constructor/burger-constructor-slice';
 import { useDrop } from 'react-dnd';
-import { BurgerConstructorItem } from '@components/burger-constructor-item/burger-constructor-item';
+import { DraggableBurgerConstructorItem } from '@components/burger-constructor-item/draggable-burger-constructor-item';
+import { LockedBurgerConstructorItem } from '@components/burger-constructor-item/locked-burger-constructor-item';
+import { PlaceholderBurgerConstructorItem } from '@components/burger-constructor-item/placeholder-burger-constructor-item';
 import { OrderDetails } from '@components/order-details/order-details';
 import { Modal } from '@components/modal/modal';
 import styles from './burger-constructor.module.css';
@@ -36,50 +38,37 @@ export const BurgerConstructor = () => {
 	return (
 		<section className={styles.burger_constructor} ref={dropRef}>
 			{bun ? (
-				<BurgerConstructorItem
+				<LockedBurgerConstructorItem
 					item={bun}
 					type='top'
-					isLocked={true}
 					text={`${bun.name} (верх)`}
 				/>
 			) : (
-				<BurgerConstructorItem
-					item={{}}
-					type='top'
-					isLocked={true}
-					text='Выберите булки'
-				/>
+				<PlaceholderBurgerConstructorItem type='top' text='Выберите булки' />
 			)}
 
 			<div className={styles.scroll_container}>
 				{ingredients.length > 0 ? (
 					ingredients.map((item) => (
-						<BurgerConstructorItem
+						<DraggableBurgerConstructorItem
 							key={item.uuid}
 							item={item}
-							isLocked={false}
 							text={item.name}
 						/>
 					))
 				) : (
-					<BurgerConstructorItem item={{}} text='Выберите начинку' />
+					<PlaceholderBurgerConstructorItem text='Выберите начинку' />
 				)}
 			</div>
 
 			{bun ? (
-				<BurgerConstructorItem
+				<LockedBurgerConstructorItem
 					item={bun}
 					type='bottom'
-					isLocked={true}
 					text={`${bun.name} (низ)`}
 				/>
 			) : (
-				<BurgerConstructorItem
-					item={{}}
-					type='bottom'
-					isLocked={true}
-					text='Выберите булки'
-				/>
+				<PlaceholderBurgerConstructorItem type='bottom' text='Выберите булки' />
 			)}
 
 			<div className={styles.order_confirmation}>
