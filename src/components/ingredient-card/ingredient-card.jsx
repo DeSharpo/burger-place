@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDrag } from 'react-dnd';
 import styles from './ingredient-card.module.css';
 import {
 	Counter,
@@ -7,12 +8,22 @@ import {
 import { ingredientPropType } from '@utils/prop-types.js';
 
 export const IngredientCard = ({ item, onClick }) => {
+	const [{ isDragging }, dragRef] = useDrag({
+		type: 'ingredient',
+		item: item,
+		collect: (monitor) => ({
+			isDragging: monitor.isDragging(),
+		}),
+	});
+
 	return (
 		<div
+			ref={dragRef}
+			onClick={() => onClick(item)}
 			className={styles.card}
+			style={{ opacity: isDragging ? 0.5 : 1 }}
 			role='button'
 			tabIndex={0}
-			onClick={() => onClick(item)}
 			onKeyDown={(e) => e.key === 'Escape' && onClick()}>
 			<img src={item.image} alt={item.name} />
 			<Counter count={1} size='default' extraClass='m-1' />

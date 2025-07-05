@@ -15,7 +15,7 @@ export const BurgerConstructorItem = ({ item, type, isLocked, text }) => {
 			<ConstructorElement
 				text={text}
 				price={item.price}
-				thumbnail={item.image}
+				thumbnail={item.image || 'constructor-item-placeholder.png'}
 				type={type}
 				isLocked={isLocked}
 			/>

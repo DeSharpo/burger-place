@@ -1,45 +1,86 @@
 import React, { useState } from 'react';
-//import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addIngredient } from '../../services/burger-constructor/burger-constructor-slice';
+import { useDrop } from 'react-dnd';
+import { BurgerConstructorItem } from '@components/burger-constructor-item/burger-constructor-item';
+import { OrderDetails } from '@components/order-details/order-details';
+import { Modal } from '@components/modal/modal';
 import styles from './burger-constructor.module.css';
-//import { BurgerConstructorItem } from '@components/burger-constructor-item/burger-constructor-item';
 import {
 	Button,
 	CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Modal } from '@components/modal/modal';
-import { OrderDetails } from '@components/order-details/order-details';
 
 export const BurgerConstructor = () => {
-	//const { ingredients } = useSelector((state) => state.burgerIngredients);
+	const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
+	const dispatch = useDispatch();
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
-
-	const summ = 610;
 
 	const openModal = () => setIsModalOpen(true);
 	const closeModal = () => setIsModalOpen(false);
 
+	const [, dropRef] = useDrop({
+		accept: 'ingredient',
+		drop: (item) => {
+			dispatch(addIngredient(item));
+		},
+	});
+
+	const summ = React.useMemo(() => {
+		const ingredientsSum = ingredients.reduce((sum, i) => sum + i.price, 0);
+		const bunPrice = bun ? bun.price * 2 : 0;
+		return ingredientsSum + bunPrice;
+	}, [ingredients, bun]);
+
 	return (
-		<section className={styles.burger_constructor}>
-			{/* <BurgerConstructorItem
-				item={top}
-				type='top'
-				isLocked={true}
-				text={`${top.name} (верх)`}
-			/>
+		<section className={styles.burger_constructor} ref={dropRef}>
+			{bun ? (
+				<BurgerConstructorItem
+					item={bun}
+					type='top'
+					isLocked={true}
+					text={`${bun.name} (верх)`}
+				/>
+			) : (
+				<BurgerConstructorItem
+					item={{}}
+					type='top'
+					isLocked={true}
+					text='Выберите булки'
+				/>
+			)}
 
 			<div className={styles.scroll_container}>
-				{middle.map((item) => (
-					<BurgerConstructorItem key={item._id} item={item} text={item.name} />
-				))}
+				{ingredients.length > 0 ? (
+					ingredients.map((item) => (
+						<BurgerConstructorItem
+							key={item.uuid}
+							item={item}
+							isLocked={false}
+							text={item.name}
+						/>
+					))
+				) : (
+					<BurgerConstructorItem item={{}} text='Выберите начинку' />
+				)}
 			</div>
 
-			<BurgerConstructorItem
-				item={bottom}
-				type='bottom'
-				isLocked={true}
-				text={`${bottom.name} (низ)`}
-			/> */}
+			{bun ? (
+				<BurgerConstructorItem
+					item={bun}
+					type='bottom'
+					isLocked={true}
+					text={`${bun.name} (низ)`}
+				/>
+			) : (
+				<BurgerConstructorItem
+					item={{}}
+					type='bottom'
+					isLocked={true}
+					text='Выберите булки'
+				/>
+			)}
 
 			<div className={styles.order_confirmation}>
 				<div className={styles.price}>
