@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 //import { useDispatch, useSelector } from 'react-redux';
 import styles from './burger-constructor.module.css';
-import * as PropTypes from 'prop-types';
-import { ingredientPropType } from '@utils/prop-types.js';
 //import { BurgerConstructorItem } from '@components/burger-constructor-item/burger-constructor-item';
 import {
 	Button,
@@ -60,8 +58,4 @@ export const BurgerConstructor = () => {
 			)}
 		</section>
 	);
-};
-
-BurgerConstructor.propTypes = {
-	ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
 };

@@ -8,12 +8,9 @@ import { fetchIngredients } from '../../services/burger-ingredients/burger-ingre
 
 export const App = () => {
 	const dispatch = useDispatch();
-	const { ingredients, status, error } = useSelector(
-		(state) => state.burgerIngredients
-	);
+	const { status, error } = useSelector((state) => state.burgerIngredients);
 
 	useEffect(() => {
-		console.log('старт запроса');
 		dispatch(fetchIngredients());
 	}, [dispatch]);
 
@@ -28,7 +25,7 @@ export const App = () => {
 				Соберите бургер
 			</h1>
 			<main className={`${styles.main} pl-5 pr-5`}>
-				<BurgerIngredients ingredients={ingredients} />
+				<BurgerIngredients />
 				<BurgerConstructor />
 			</main>
 		</div>
