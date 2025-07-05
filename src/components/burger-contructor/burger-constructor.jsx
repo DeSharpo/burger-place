@@ -49,11 +49,12 @@ export const BurgerConstructor = () => {
 
 			<div className={styles.scroll_container}>
 				{ingredients.length > 0 ? (
-					ingredients.map((item) => (
+					ingredients.map((item, index) => (
 						<DraggableBurgerConstructorItem
 							key={item.uuid}
 							item={item}
 							text={item.name}
+							index={index}
 						/>
 					))
 				) : (

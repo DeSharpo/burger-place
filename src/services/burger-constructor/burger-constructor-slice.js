@@ -23,10 +23,11 @@ const burgerConstructorSlice = createSlice({
 				(item) => item.uuid !== action.payload
 			);
 		},
-		sortIngredients: (state, action) => {
+		moveIngredient: (state, action) => {
 			const { fromIndex, toIndex } = action.payload;
 			const updated = [...state.ingredients];
-			updated.splice(toIndex, 0, updated.splice(fromIndex, 1)[0]);
+			const [moved] = updated.splice(fromIndex, 1);
+			updated.splice(toIndex, 0, moved);
 			state.ingredients = updated;
 		},
 		clearConstructor: (state) => {
@@ -39,7 +40,7 @@ const burgerConstructorSlice = createSlice({
 export const {
 	addIngredient,
 	removeIngredient,
-	sortIngredients,
+	moveIngredient,
 	clearConstructor,
 } = burgerConstructorSlice.actions;
 export default burgerConstructorSlice.reducer;
