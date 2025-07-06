@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	setCurrentIngredient,
+	clearCurrentIngredient,
+} from '../../services/ingredient-card/ingredient-card-slice';
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientCard } from '@components/ingredient-card/ingredient-card';
@@ -9,8 +13,9 @@ import { IngredientDetails } from '@components/ingredient-details/ingredient-det
 export const BurgerIngredients = () => {
 	const { ingredients } = useSelector((state) => state.burgerIngredients);
 	console.log(ingredients);
+	const { ingredient } = useSelector((state) => state.ingredientCard);
+	const dispatch = useDispatch();
 
-	const [selectedIngredient, setSelectedIngredient] = useState(null);
 	const [currentTab, setCurrentTab] = useState('bun');
 
 	const containerRef = useRef(null);
@@ -23,11 +28,11 @@ export const BurgerIngredients = () => {
 	const mains = ingredients.filter((i) => i.type === 'main');
 
 	const handleCardClick = (item) => {
-		setSelectedIngredient(item);
+		dispatch(setCurrentIngredient(item));
 	};
 
 	const closeModal = () => {
-		setSelectedIngredient(null);
+		dispatch(clearCurrentIngredient(null));
 	};
 
 	const handleScroll = () => {
@@ -130,9 +135,9 @@ export const BurgerIngredients = () => {
 						/>
 					))}
 				</ul>
-				{selectedIngredient && (
+				{ingredient && (
 					<Modal title='Детали ингредиента' onClose={closeModal}>
-						<IngredientDetails item={selectedIngredient} />
+						<IngredientDetails />
 					</Modal>
 				)}
 			</div>
