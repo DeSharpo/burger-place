@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addIngredient } from '../../services/burger-constructor/burger-constructor-slice';
+import {
+	addIngredient,
+	clearConstructor,
+} from '../../services/burger-constructor/burger-constructor-slice';
 import { setCounters } from '../../services/burger-ingredients/burger-ingredients-slice';
 import { createOrder } from '../../services/order-details/order-details-slice';
 import { useDrop } from 'react-dnd';
@@ -27,7 +30,11 @@ export const BurgerConstructor = () => {
 		if (!bun) return;
 
 		const ids = [bun._id, ...ingredients.map((i) => i._id), bun._id];
-		dispatch(createOrder(ids));
+		dispatch(createOrder(ids)).then((res) => {
+			if (createOrder.fulfilled.match(res)) {
+				dispatch(clearConstructor());
+			}
+		});
 
 		setIsModalOpen(true);
 	};
