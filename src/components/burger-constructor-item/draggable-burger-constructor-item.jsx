@@ -2,7 +2,10 @@ import React, { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import styles from './burger-constructor-item.module.css';
-import { moveIngredient } from '../../services/burger-constructor/burger-constructor-slice';
+import {
+	moveIngredient,
+	removeIngredient,
+} from '../../services/burger-constructor/burger-constructor-slice';
 import { ingredientPropType } from '@utils/prop-types.js';
 import {
 	ConstructorElement,
@@ -48,6 +51,7 @@ export const DraggableBurgerConstructorItem = ({ item, index }) => {
 				price={item.price}
 				thumbnail={item.image}
 				isLocked={false}
+				handleClose={() => dispatch(removeIngredient(item.uuid))}
 			/>
 		</div>
 	);

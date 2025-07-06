@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addIngredient } from '../../services/burger-constructor/burger-constructor-slice';
+import { setCounters } from '../../services/burger-ingredients/burger-ingredients-slice';
 import { useDrop } from 'react-dnd';
 import { DraggableBurgerConstructorItem } from '@components/burger-constructor-item/draggable-burger-constructor-item';
 import { LockedBurgerConstructorItem } from '@components/burger-constructor-item/locked-burger-constructor-item';
@@ -34,6 +35,24 @@ export const BurgerConstructor = () => {
 		const bunPrice = bun ? bun.price * 2 : 0;
 		return ingredientsSum + bunPrice;
 	}, [ingredients, bun]);
+
+	useEffect(() => {
+		const counters = {};
+
+		if (bun) {
+			counters[bun._id] = 2;
+		}
+
+		ingredients.forEach((item) => {
+			if (counters[item._id]) {
+				counters[item._id]++;
+			} else {
+				counters[item._id] = 1;
+			}
+		});
+
+		dispatch(setCounters(counters));
+	}, [bun, ingredients, dispatch]);
 
 	return (
 		<section className={styles.burger_constructor} ref={dropRef}>

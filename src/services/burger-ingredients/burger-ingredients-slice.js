@@ -18,11 +18,17 @@ const initialState = {
 	ingredients: [],
 	status: 'idle',
 	error: null,
+	counters: {},
 };
 
 const burgerIngredientsSlice = createSlice({
 	name: 'burgerIngredients',
 	initialState,
+	reducers: {
+		setCounters: (state, action) => {
+			state.counters = action.payload;
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchIngredients.pending, (state) => {
@@ -40,4 +46,5 @@ const burgerIngredientsSlice = createSlice({
 	},
 });
 
+export const { setCounters } = burgerIngredientsSlice.actions;
 export default burgerIngredientsSlice.reducer;
