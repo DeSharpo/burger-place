@@ -1,31 +1,54 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { CREATE_ORDER_URLD } from '../../utils/config';
 
-const initialState = {
-	orderNumber: null,
-	orderRequest: false,
-	orderFailed: false,
-};
+export const createOrder = createAsyncThunk(
+	'order/createOrder',
+	async (ingredientIds) => {
+		const response = await fetch(CREATE_ORDER_URLD, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ ingredients: ingredientIds }),
+		});
+
+		if (!response.ok) {
+			throw new Error('Ошибка при создании заказа');
+		}
+
+		const data = await response.json();
+		return data.order.number;
+	}
+);
 
 const orderDetailsSlice = createSlice({
-	name: 'orderDetails',
-	initialState,
+	name: 'order',
+	initialState: {
+		orderNumber: null,
+		status: 'idle',
+		error: null,
+	},
 	reducers: {
-		createOrderRequest: (state) => {
-			state.orderRequest = true;
+		clearOrder: (state) => {
+			state.orderNumber = null;
 		},
-		createOrderSuccess: (state, action) => {
-			state.orderRequest = false;
-			state.orderFailed = false;
-			state.orderNumber = action.payload;
-		},
-		createOrderFailure: (state) => {
-			state.orderRequest = false;
-			state.orderFailed = true;
-		},
+	},
+	extraReducers: (builder) => {
+		builder
+			.addCase(createOrder.pending, (state) => {
+				state.status = 'loading';
+				state.error = null;
+			})
+			.addCase(createOrder.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.orderNumber = action.payload;
+			})
+			.addCase(createOrder.rejected, (state, action) => {
+				state.status = 'failed';
+				state.error = action.error.message;
+			});
 	},
 });
 
-export const { createOrderRequest, createOrderSuccess, createOrderFailure } =
-	orderDetailsSlice.actions;
-
+export const { clearOrder } = orderDetailsSlice.actions;
 export default orderDetailsSlice.reducer;

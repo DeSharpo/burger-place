@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addIngredient } from '../../services/burger-constructor/burger-constructor-slice';
 import { setCounters } from '../../services/burger-ingredients/burger-ingredients-slice';
+import { createOrder } from '../../services/order-details/order-details-slice';
 import { useDrop } from 'react-dnd';
 import { DraggableBurgerConstructorItem } from '@components/burger-constructor-item/draggable-burger-constructor-item';
 import { LockedBurgerConstructorItem } from '@components/burger-constructor-item/locked-burger-constructor-item';
@@ -20,8 +21,16 @@ export const BurgerConstructor = () => {
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
-	const openModal = () => setIsModalOpen(true);
 	const closeModal = () => setIsModalOpen(false);
+
+	const handleOrderClick = () => {
+		if (!bun) return;
+
+		const ids = [bun._id, ...ingredients.map((i) => i._id), bun._id];
+		dispatch(createOrder(ids));
+
+		setIsModalOpen(true);
+	};
 
 	const [, dropRef] = useDrop({
 		accept: 'ingredient',
@@ -96,7 +105,7 @@ export const BurgerConstructor = () => {
 					<span className='text text_type_digits-medium'>{summ}</span>
 					<CurrencyIcon />
 				</div>
-				<Button htmlType='button' onClick={openModal}>
+				<Button htmlType='button' onClick={handleOrderClick}>
 					Оформить заказ
 				</Button>
 			</div>
