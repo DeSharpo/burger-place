@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useDrag } from 'react-dnd';
 import styles from './ingredient-card.module.css';
@@ -9,6 +10,8 @@ import {
 import { ingredientPropType } from '@utils/prop-types.js';
 
 export const IngredientCard = ({ item, onClick }) => {
+	const location = useLocation();
+	const ingredientId = item['_id'];
 	const { counters } = useSelector((state) => state.burgerIngredients);
 	const count = counters[item._id] || 0;
 
@@ -21,26 +24,32 @@ export const IngredientCard = ({ item, onClick }) => {
 	});
 
 	return (
-		<div
-			ref={dragRef}
-			onClick={() => onClick(item)}
-			className={styles.card}
-			style={{ opacity: isDragging ? 0.5 : 1 }}
-			role='button'
-			tabIndex={0}
-			onKeyDown={(e) => e.key === 'Escape' && onClick()}>
-			<img src={item.image} alt={item.name} />
-			{count > 0 && <Counter count={count} size='default' extraClass='m-1' />}
-			<div className={styles.price}>
-				<span className={'text text_type_digits-default mr-2'}>
-					{item.price}
-				</span>
-				<CurrencyIcon />
+		<Link
+			key={ingredientId}
+			to={`/ingredients/${ingredientId}`}
+			state={{ background: location }}
+			className={styles.link}>
+			<div
+				ref={dragRef}
+				onClick={() => onClick(item)}
+				className={styles.card}
+				style={{ opacity: isDragging ? 0.5 : 1 }}
+				role='button'
+				tabIndex={0}
+				onKeyDown={(e) => e.key === 'Escape' && onClick()}>
+				<img src={item.image} alt={item.name} />
+				{count > 0 && <Counter count={count} size='default' extraClass='m-1' />}
+				<div className={styles.price}>
+					<span className={'text text_type_digits-default mr-2'}>
+						{item.price}
+					</span>
+					<CurrencyIcon />
+				</div>
+				<p className={`text text_type_main-default ${styles.name}`}>
+					{item.name}
+				</p>
 			</div>
-			<p className={`text text_type_main-default ${styles.name}`}>
-				{item.name}
-			</p>
-		</div>
+		</Link>
 	);
 };
 
