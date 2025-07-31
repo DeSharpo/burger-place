@@ -9,6 +9,8 @@ import { Home } from '../../pages/home/home.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchIngredients } from '../../services/burger-ingredients/burger-ingredients-slice';
 import { clearCurrentIngredient } from '../../services/ingredient-card/ingredient-card-slice';
+import { Login } from '../../pages/login/login.jsx';
+import { Registration } from '../../pages/registration/registration.jsx';
 
 export const App = () => {
 	const location = useLocation();
@@ -42,6 +44,8 @@ export const App = () => {
 						</div>
 					}
 				/>
+				<Route path='/login' element={<Login />} />
+				<Route path='/register' element={<Registration />} />
 			</Routes>
 
 			{background && (

@@ -1,0 +1,25 @@
+.centeredWrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	padding: 0 16px;
+	background-color: #0f0f0f;
+}
+
+.box {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	max-width: 500px;
+}
+
+.link {
+	color: #4c4cff;
+	text-decoration: none;
+}
+
+.link:hover {
+	text-decoration: underline;
+}
