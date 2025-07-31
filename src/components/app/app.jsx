@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import styles from './app.module.css';
-import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
-import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
 import { AppHeader } from '@components/app-header/app-header.jsx';
+import { Preloader } from '../preloader/preloader';
+import { Home } from '../../pages/home/home.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchIngredients } from '../../services/burger-ingredients/burger-ingredients-slice';
 
@@ -14,7 +15,7 @@ export const App = () => {
 		dispatch(fetchIngredients());
 	}, [dispatch]);
 
-	if (status === 'idle' || status === 'loading') return <p>Загрузка...</p>;
+	if (status === 'idle' || status === 'loading') return <Preloader />;
 	if (status === 'failed') return <p>Ошибка загрузки данных: {error}</p>;
 
 	return (
@@ -25,8 +26,9 @@ export const App = () => {
 				Соберите бургер
 			</h1>
 			<main className={`${styles.main} pl-5 pr-5`}>
-				<BurgerIngredients />
-				<BurgerConstructor />
+				<Routes>
+					<Route path='/' element={<Home />} />
+				</Routes>
 			</main>
 		</div>
 	);
