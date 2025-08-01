@@ -11,6 +11,9 @@ import { fetchIngredients } from '../../services/burger-ingredients/burger-ingre
 import { clearCurrentIngredient } from '../../services/ingredient-card/ingredient-card-slice';
 import { Login } from '../../pages/login/login.jsx';
 import { Registration } from '../../pages/registration/registration.jsx';
+import { ForgotPassword } from '../../pages/forgot-password/forgot-password.jsx';
+import { ResetPassword } from '../../pages/reset-password/reset-password.jsx';
+import { Profile } from '../../pages/profile/profile.jsx';
 
 export const App = () => {
 	const location = useLocation();
@@ -46,6 +49,9 @@ export const App = () => {
 				/>
 				<Route path='/login' element={<Login />} />
 				<Route path='/register' element={<Registration />} />
+				<Route path='/forgot-password' element={<ForgotPassword />} />
+				<Route path='/reset-password' element={<ResetPassword />} />
+				<Route path='/profile' element={<Profile />} />
 			</Routes>
 
 			{background && (
