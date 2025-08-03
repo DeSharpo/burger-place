@@ -13,9 +13,11 @@ import { Login } from '../../pages/login/login.jsx';
 import { Registration } from '../../pages/registration/registration.jsx';
 import { ForgotPassword } from '../../pages/forgot-password/forgot-password.jsx';
 import { ResetPassword } from '../../pages/reset-password/reset-password.jsx';
-import { Profile } from '../../pages/profile/profile.jsx';
 import { OnlyAuth, OnlyUnAuth } from '../protected-route.jsx';
 import { getUser, setAuthChecked } from '../../services/user/user-slice.js';
+import { ProfileLayout } from '../../pages/profile/profile-layout.jsx';
+import { ProfileMain } from '../../pages/profile/profile-main.jsx';
+import { ProfileOrders } from '../../pages/profile/profile-orders.jsx';
 
 export const App = () => {
 	const location = useLocation();
@@ -34,9 +36,14 @@ export const App = () => {
 	}, [dispatch]);
 
 	useEffect(() => {
-		dispatch(getUser()).finally(() => {
+		const token = localStorage.getItem('accessToken');
+		if (token) {
+			dispatch(getUser()).finally(() => {
+				dispatch(setAuthChecked(true));
+			});
+		} else {
 			dispatch(setAuthChecked(true));
-		});
+		}
 	}, [dispatch]);
 
 	if (status === 'idle' || status === 'loading') return <Preloader />;
@@ -68,7 +75,13 @@ export const App = () => {
 					path='/reset-password'
 					element={<OnlyUnAuth component={<ResetPassword />} />}
 				/>
-				<Route path='/profile' element={<OnlyAuth component={<Profile />} />} />
+				<Route
+					path='/profile'
+					element={<OnlyAuth component={<ProfileLayout />} />}>
+					<Route index element={<ProfileMain />} />
+					<Route path='orders' element={<ProfileOrders />} />
+					<Route path='orders/:id' element={<ProfileOrders />} />
+				</Route>
 			</Routes>
 
 			{background && (

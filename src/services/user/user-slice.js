@@ -97,7 +97,7 @@ const userSlice = createSlice({
 			})
 			.addCase(logoutUser.fulfilled, (state) => {
 				state.user = null;
-				state.isAuthChecked = false;
+				state.isAuthChecked = true;
 			});
 	},
 });
