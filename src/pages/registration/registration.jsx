@@ -6,7 +6,9 @@ import {
 	PasswordInput,
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { registerUser } from '../../services/user/user-slice';
 
 export const Registration = () => {
 	const [nameValue, setNameValue] = useState('');
@@ -14,6 +16,26 @@ export const Registration = () => {
 	const [passwordValue, setPasswordValue] = useState('');
 
 	const inputRef = useRef(null);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const onRegister = (e) => {
+		e.preventDefault();
+		dispatch(
+			registerUser({
+				name: nameValue,
+				email: emailValue,
+				password: passwordValue,
+			})
+		)
+			.unwrap()
+			.then(() => {
+				navigate('/', { replace: true });
+			})
+			.catch((err) => {
+				console.error('Ошибка регистрации:', err.message);
+			});
+	};
 
 	return (
 		<div className={styles.centeredWrapper}>
@@ -48,7 +70,8 @@ export const Registration = () => {
 					htmlType='button'
 					type='primary'
 					size='medium'
-					extraClass='mb-20'>
+					extraClass='mb-20'
+					onClick={onRegister}>
 					Зарегистрироваться
 				</Button>
 				<p className='text text_type_main-default text_color_inactive mb-4'>

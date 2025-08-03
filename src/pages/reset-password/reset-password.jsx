@@ -1,17 +1,37 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from './reset-password.module.css';
 import {
 	Input,
 	PasswordInput,
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { request } from '../../utils/request';
 
 export const ResetPassword = () => {
-	const [nameValue, setNameValue] = useState('');
 	const [passwordValue, setPasswordValue] = useState('');
+	const [codeValue, setCodeValue] = useState('');
 
+	const navigate = useNavigate();
 	const inputRef = useRef(null);
+
+	useEffect(() => {
+		if (!localStorage.getItem('allowReset')) {
+			navigate('/forgot-password');
+		}
+	}, [navigate]);
+
+	const onSubmit = (e) => {
+		e.preventDefault();
+		request('/password-reset/reset', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ password: passwordValue, token: codeValue }),
+		}).then(() => {
+			localStorage.removeItem('allowReset');
+			navigate('/login');
+		});
+	};
 
 	return (
 		<div className={styles.centeredWrapper}>
@@ -29,8 +49,8 @@ export const ResetPassword = () => {
 				<Input
 					type={'text'}
 					placeholder={'Введите код из письма'}
-					onChange={(e) => setNameValue(e.target.value)}
-					value={nameValue}
+					onChange={(e) => setCodeValue(e.target.value)}
+					value={codeValue}
 					name={'name'}
 					error={false}
 					ref={inputRef}
@@ -43,7 +63,8 @@ export const ResetPassword = () => {
 					htmlType='button'
 					type='primary'
 					size='medium'
-					extraClass='mb-20'>
+					extraClass='mb-20'
+					onClick={onSubmit}>
 					Сохранить
 				</Button>
 				<p className='text text_type_main-default text_color_inactive mb-4'>

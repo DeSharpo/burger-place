@@ -14,6 +14,8 @@ import { Registration } from '../../pages/registration/registration.jsx';
 import { ForgotPassword } from '../../pages/forgot-password/forgot-password.jsx';
 import { ResetPassword } from '../../pages/reset-password/reset-password.jsx';
 import { Profile } from '../../pages/profile/profile.jsx';
+import { OnlyAuth, OnlyUnAuth } from '../protected-route.jsx';
+import { getUser, setAuthChecked } from '../../services/user/user-slice.js';
 
 export const App = () => {
 	const location = useLocation();
@@ -29,6 +31,12 @@ export const App = () => {
 
 	useEffect(() => {
 		dispatch(fetchIngredients());
+	}, [dispatch]);
+
+	useEffect(() => {
+		dispatch(getUser()).finally(() => {
+			dispatch(setAuthChecked(true));
+		});
 	}, [dispatch]);
 
 	if (status === 'idle' || status === 'loading') return <Preloader />;
@@ -47,11 +55,20 @@ export const App = () => {
 						</div>
 					}
 				/>
-				<Route path='/login' element={<Login />} />
-				<Route path='/register' element={<Registration />} />
-				<Route path='/forgot-password' element={<ForgotPassword />} />
-				<Route path='/reset-password' element={<ResetPassword />} />
-				<Route path='/profile' element={<Profile />} />
+				<Route path='/login' element={<OnlyUnAuth component={<Login />} />} />
+				<Route
+					path='/register'
+					element={<OnlyUnAuth component={<Registration />} />}
+				/>
+				<Route
+					path='/forgot-password'
+					element={<OnlyUnAuth component={<ForgotPassword />} />}
+				/>
+				<Route
+					path='/reset-password'
+					element={<OnlyUnAuth component={<ResetPassword />} />}
+				/>
+				<Route path='/profile' element={<OnlyAuth component={<Profile />} />} />
 			</Routes>
 
 			{background && (

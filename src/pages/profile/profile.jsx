@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
 	Input,
 	EmailInput,
@@ -7,22 +7,69 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './profile.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	getUser,
+	updateUser,
+	logoutUser,
+} from '../../services/user/user-slice';
 
 export const Profile = () => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const user = useSelector((state) => state.user.user);
+
 	const [form, setForm] = useState({ name: '', email: '', password: '' });
 	const [isDirty, setIsDirty] = useState(false);
 
+	useEffect(() => {
+		if (!user) dispatch(getUser());
+		else setForm({ name: user.name, email: user.email, password: '' });
+	}, [dispatch, user]);
+
 	const handleChange = (e) => {
-		setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
-		setIsDirty(true);
+		const { name, value } = e.target;
+		setForm((prev) => {
+			const updated = { ...prev, [name]: value };
+			const dirty =
+				updated.name !== user?.name ||
+				updated.email !== user?.email ||
+				updated.password !== '';
+			setIsDirty(dirty);
+			return updated;
+		});
 	};
-	const handleCancel = () => setIsDirty(false);
-	const handleSave = (e) => {
-		e.preventDefault();
+
+	const handleCancel = () => {
+		setForm({ name: user.name, email: user.email, password: '' });
 		setIsDirty(false);
 	};
+
+	const handleSave = (e) => {
+		e.preventDefault();
+		const payload = {
+			name: form.name,
+			email: form.email,
+		};
+		if (form.password) payload.password = form.password;
+
+		dispatch(updateUser(payload))
+			.unwrap()
+			.then(() => {
+				setIsDirty(false);
+				setForm((f) => ({ ...f, password: '' }));
+			})
+			.catch((err) => {
+				console.error('Ошибка обновления профиля:', err.message);
+			});
+	};
+
 	const handleLogout = () => {
-		/* dispatch(logout()) */
+		dispatch(logoutUser())
+			.unwrap()
+			.then(() => {
+				navigate('/', { replace: true });
+			});
 	};
 
 	return (

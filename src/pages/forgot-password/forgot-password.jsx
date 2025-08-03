@@ -4,10 +4,24 @@ import {
 	EmailInput,
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { request } from '../../utils/request';
 
 export const ForgotPassword = () => {
 	const [emailValue, setEmailValue] = useState('');
+	const navigate = useNavigate();
+
+	const onSubmit = (e) => {
+		e.preventDefault();
+		request('/password-reset', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ email: emailValue }),
+		}).then(() => {
+			localStorage.setItem('allowReset', 'true');
+			navigate('/reset-password');
+		});
+	};
 
 	return (
 		<div className={styles.centeredWrapper}>
@@ -27,8 +41,9 @@ export const ForgotPassword = () => {
 					htmlType='button'
 					type='primary'
 					size='medium'
-					extraClass='mb-20'>
-					Войти
+					extraClass='mb-20'
+					onClick={onSubmit}>
+					Восстановить
 				</Button>
 				<p className='text text_type_main-default text_color_inactive mb-4'>
 					Вспомнили пароль?{' '}
