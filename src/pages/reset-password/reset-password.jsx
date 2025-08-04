@@ -39,34 +39,35 @@ export const ResetPassword = () => {
 				<h1 className='text text_type_main-medium mb-6'>
 					Восстановление пароля
 				</h1>
-				<PasswordInput
-					onChange={(e) => setPasswordValue(e.target.value)}
-					value={passwordValue}
-					name='password'
-					placeholder='Введите новый пароль'
-					extraClass='mb-6'
-				/>
-				<Input
-					type={'text'}
-					placeholder={'Введите код из письма'}
-					onChange={(e) => setCodeValue(e.target.value)}
-					value={codeValue}
-					name={'name'}
-					error={false}
-					ref={inputRef}
-					errorText={'Ошибка'}
-					size={'default'}
-					extraClass='mb-6'
-				/>
+				<form className={styles.form} onSubmit={onSubmit}>
+					<PasswordInput
+						onChange={(e) => setPasswordValue(e.target.value)}
+						value={passwordValue}
+						name='password'
+						placeholder='Введите новый пароль'
+						extraClass='mb-6'
+					/>
+					<Input
+						type={'text'}
+						placeholder={'Введите код из письма'}
+						onChange={(e) => setCodeValue(e.target.value)}
+						value={codeValue}
+						name={'name'}
+						error={false}
+						ref={inputRef}
+						errorText={'Ошибка'}
+						size={'default'}
+						extraClass='mb-6'
+					/>
 
-				<Button
-					htmlType='button'
-					type='primary'
-					size='medium'
-					extraClass='mb-20'
-					onClick={onSubmit}>
-					Сохранить
-				</Button>
+					<Button
+						htmlType='submit'
+						type='primary'
+						size='medium'
+						extraClass='mb-20'>
+						Сохранить
+					</Button>
+				</form>
 				<p className='text text_type_main-default text_color_inactive mb-4'>
 					Вспомнили пароль?{' '}
 					<Link to='/login' className={styles.link}>

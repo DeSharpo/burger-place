@@ -29,22 +29,23 @@ export const ForgotPassword = () => {
 				<h1 className='text text_type_main-medium mb-6'>
 					Восстановление пароля
 				</h1>
-				<EmailInput
-					onChange={(e) => setEmailValue(e.target.value)}
-					value={emailValue}
-					name='email'
-					isIcon={false}
-					placeholder='Укажите e-mail'
-					extraClass='mb-6'
-				/>
-				<Button
-					htmlType='button'
-					type='primary'
-					size='medium'
-					extraClass='mb-20'
-					onClick={onSubmit}>
-					Восстановить
-				</Button>
+				<form className={styles.form} onSubmit={onSubmit}>
+					<EmailInput
+						onChange={(e) => setEmailValue(e.target.value)}
+						value={emailValue}
+						name='email'
+						isIcon={false}
+						placeholder='Укажите e-mail'
+						extraClass='mb-6'
+					/>
+					<Button
+						htmlType='submit'
+						type='primary'
+						size='medium'
+						extraClass='mb-20'>
+						Восстановить
+					</Button>
+				</form>
 				<p className='text text_type_main-default text_color_inactive mb-4'>
 					Вспомнили пароль?{' '}
 					<Link to='/login' className={styles.link}>
