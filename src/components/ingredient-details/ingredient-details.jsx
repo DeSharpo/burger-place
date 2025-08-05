@@ -1,13 +1,23 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styles from './ingredient-details.module.css';
+import { useParams } from 'react-router-dom';
 
-export const IngredientDetails = () => {
-	const { ingredient } = useSelector((state) => state.ingredientCard);
+export const IngredientDetails = ({ title }) => {
+	const { currentIngredient } = useSelector((state) => state.ingredientCard);
+	const { ingredients } = useSelector((state) => state.burgerIngredients);
+	const { ingredientId } = useParams();
+
+	const foundIngredient = ingredients.find((item) => item._id === ingredientId);
+	const ingredient = currentIngredient || foundIngredient;
+
 	if (!ingredient) return null;
 
 	return (
 		<div className={styles.content}>
+			{title && (
+				<h1 className={'text text_type_main-large mt-10 mb-5 pl-5'}>{title}</h1>
+			)}
 			<img
 				src={ingredient.image_large}
 				alt={ingredient.name}

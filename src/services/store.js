@@ -4,6 +4,7 @@ import burgerIngredientsReducer from './burger-ingredients/burger-ingredients-sl
 import burgerConstructorReducer from './burger-constructor/burger-constructor-slice';
 import ingredientCardReducer from './ingredient-card/ingredient-card-slice';
 import orderDetailsReducer from './order-details/order-details-slice';
+import userReducer from './user/user-slice';
 
 export const store = configureStore({
 	reducer: {
@@ -11,5 +12,6 @@ export const store = configureStore({
 		burgerConstructor: burgerConstructorReducer,
 		ingredientCard: ingredientCardReducer,
 		orderDetails: orderDetailsReducer,
+		user: userReducer,
 	},
 });

@@ -1,0 +1,52 @@
+.container {
+	position: relative;
+	display: flex;
+	height: calc(100vh - 64px);
+	background-color: #0f0f0f;
+}
+
+.nav {
+	display: flex;
+	flex-direction: column;
+	width: 300px;
+	margin-top: 100px;
+	margin-left: 40px;
+}
+
+.link {
+	margin-bottom: 20px;
+	padding: 0;
+	color: var(--text-inactive-color);
+	text-align: left;
+	text-decoration: none;
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
+.link_active {
+	margin-bottom: 20px;
+	color: var(--text-primary-color);
+	text-decoration: none;
+}
+
+.nav > p.text {
+	margin-top: 24px;
+}
+
+.form {
+	position: absolute;
+	top: 100px;
+	left: 50%;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	width: 480px;
+	transform: translateX(-50%);
+}
+
+.buttons {
+	display: flex;
+	gap: 16px;
+	margin-top: 24px;
+}

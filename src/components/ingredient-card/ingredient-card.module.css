@@ -21,3 +21,8 @@
 .name {
 	text-align: center;
 }
+
+.link {
+	color: white !important;
+	text-decoration: none;
+}

@@ -17,10 +17,14 @@ import {
 	Button,
 	CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor = () => {
 	const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
+	const user = useSelector((state) => state.user.user);
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const location = useLocation();
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -28,6 +32,13 @@ export const BurgerConstructor = () => {
 
 	const handleOrderClick = () => {
 		if (!bun) return;
+
+		if (!user) {
+			navigate('/login', {
+				state: { from: location },
+			});
+			return;
+		}
 
 		const ids = [bun._id, ...ingredients.map((i) => i._id), bun._id];
 		dispatch(createOrder(ids)).then((res) => {
