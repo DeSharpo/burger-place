@@ -9,11 +9,11 @@ import {
 	ConstructorElement,
 	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import type { Ingredient } from '@/types/ingredient';
+import type { ConstructorIngredient } from '@/types/ingredient';
 import { useAppDispatch } from '@/services/hooks';
 
 type Props = {
-	item: Ingredient & { uuid: string };
+	item: ConstructorIngredient;
 	index: number;
 };
 

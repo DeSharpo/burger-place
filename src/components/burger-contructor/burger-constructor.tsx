@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
 	addIngredient,
 	clearConstructor,
@@ -18,11 +17,22 @@ import {
 	CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '@/services/hooks';
+import type { ConstructorIngredient } from '@/types/ingredient';
 
 export const BurgerConstructor = () => {
-	const { bun, ingredients } = useSelector((state) => state.burgerConstructor);
-	const user = useSelector((state) => state.user.user);
-	const dispatch = useDispatch();
+	const { bun, ingredients } = useAppSelector(
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		(s) => (s as any).burgerConstructor
+	) as {
+		bun: ConstructorIngredient | null;
+		ingredients: ConstructorIngredient[];
+	};
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const user = useAppSelector((s) => (s as any).user.user) as unknown as {
+		_id?: string;
+	} | null;
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -41,7 +51,8 @@ export const BurgerConstructor = () => {
 		}
 
 		const ids = [bun._id, ...ingredients.map((i) => i._id), bun._id];
-		dispatch(createOrder(ids)).then((res) => {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		dispatch(createOrder(ids)).then((res: any) => {
 			if (createOrder.fulfilled.match(res)) {
 				dispatch(clearConstructor());
 			}
@@ -64,7 +75,7 @@ export const BurgerConstructor = () => {
 	}, [ingredients, bun]);
 
 	useEffect(() => {
-		const counters = {};
+		const counters: Record<string, number> = {};
 
 		if (bun) {
 			counters[bun._id] = 2;
@@ -99,7 +110,6 @@ export const BurgerConstructor = () => {
 						<DraggableBurgerConstructorItem
 							key={item.uuid}
 							item={item}
-							text={item.name}
 							index={index}
 						/>
 					))
@@ -121,7 +131,7 @@ export const BurgerConstructor = () => {
 			<div className={styles.order_confirmation}>
 				<div className={styles.price}>
 					<span className='text text_type_digits-medium'>{summ}</span>
-					<CurrencyIcon />
+					<CurrencyIcon type={'primary'} />
 				</div>
 				<Button htmlType='button' onClick={handleOrderClick}>
 					Оформить заказ

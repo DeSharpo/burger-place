@@ -14,3 +14,7 @@ export interface Ingredient {
 	image_mobile: string;
 	__v: number;
 }
+
+export interface ConstructorIngredient extends Ingredient {
+	uuid: string;
+}
