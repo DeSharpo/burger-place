@@ -17,7 +17,6 @@ import { getUser, setAuthChecked } from '../../services/user/user-slice.js';
 import { ProfileLayout } from '../../pages/profile/profile-layout';
 import { ProfileMain } from '../../pages/profile/profile-main';
 import { ProfileOrders } from '../../pages/profile/profile-orders';
-
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
 
 type LocationState = { background?: Location };
