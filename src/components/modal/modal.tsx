@@ -1,14 +1,20 @@
-import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import { useEffect, ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import styles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ModalOverlay } from './modal-overlay';
 
+type Props = {
+	title?: string;
+	onClose: () => void;
+	children: ReactNode;
+};
+
 const modalRoot = document.getElementById('modal-root');
 
-export const Modal = ({ title, onClose, children }) => {
+export const Modal = ({ title, onClose, children }: Props) => {
 	useEffect(() => {
-		const handleEsc = (e) => {
+		const handleEsc = (e: KeyboardEvent) => {
 			if (e.key === 'Escape') {
 				onClose();
 			}
@@ -17,7 +23,9 @@ export const Modal = ({ title, onClose, children }) => {
 		return () => document.removeEventListener('keydown', handleEsc);
 	}, [onClose]);
 
-	return ReactDOM.createPortal(
+	if (!modalRoot) return null;
+
+	return createPortal(
 		<>
 			<ModalOverlay onClick={onClose} />
 			<div className={styles.modal}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import styles from './login.module.css';
 import {
 	EmailInput,
@@ -10,8 +10,8 @@ import { useDispatch } from 'react-redux';
 import { loginUser } from '../../services/user/user-slice';
 
 export const Login = () => {
-	const [emailValue, setEmailValue] = useState('');
-	const [passwordValue, setPasswordValue] = useState('');
+	const [emailValue, setEmailValue] = useState<string>('');
+	const [passwordValue, setPasswordValue] = useState<string>('');
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -19,14 +19,14 @@ export const Login = () => {
 
 	const from = location.state?.from?.pathname || '/';
 
-	const onLogin = (e) => {
+	const onLogin = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		dispatch(loginUser({ email: emailValue, password: passwordValue }))
 			.unwrap()
 			.then(() => {
 				navigate(from, { replace: true });
 			})
-			.catch((err) => {
+			.catch((err: Error) => {
 				console.error('Ошибка авторизации:', err.message);
 			});
 	};
