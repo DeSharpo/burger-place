@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import {
 	Input,
 	EmailInput,
@@ -6,14 +6,25 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './profile.module.css';
-import { useDispatch, useSelector } from 'react-redux';
 import { getUser, updateUser } from '../../services/user/user-slice';
+import { useAppDispatch, useAppSelector } from '@/services/hooks';
+
+interface ProfileForm {
+	name: string;
+	email: string;
+	password: string;
+}
 
 export const ProfileMain = () => {
-	const dispatch = useDispatch();
-	const user = useSelector((state) => state.user.user);
+	const dispatch = useAppDispatch();
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const user = useAppSelector((s) => (s as any).user.user);
 
-	const [form, setForm] = useState({ name: '', email: '', password: '' });
+	const [form, setForm] = useState<ProfileForm>({
+		name: '',
+		email: '',
+		password: '',
+	});
 	const [isDirty, setIsDirty] = useState(false);
 
 	useEffect(() => {
@@ -21,7 +32,7 @@ export const ProfileMain = () => {
 		else setForm({ name: user.name, email: user.email, password: '' });
 	}, [dispatch, user]);
 
-	const handleChange = (e) => {
+	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		setForm((prev) => {
 			const updated = { ...prev, [name]: value };
@@ -39,9 +50,9 @@ export const ProfileMain = () => {
 		setIsDirty(false);
 	};
 
-	const handleSave = (e) => {
+	const handleSave = (e: FormEvent) => {
 		e.preventDefault();
-		const payload = {
+		const payload: Partial<ProfileForm> = {
 			name: form.name,
 			email: form.email,
 		};
@@ -53,7 +64,7 @@ export const ProfileMain = () => {
 				setIsDirty(false);
 				setForm((f) => ({ ...f, password: '' }));
 			})
-			.catch((err) => {
+			.catch((err: Error) => {
 				console.error('Ошибка обновления профиля:', err.message);
 			});
 	};
@@ -73,7 +84,6 @@ export const ProfileMain = () => {
 				name='email'
 				value={form.email}
 				onChange={handleChange}
-				icon='EditIcon'
 				extraClass='mb-6'
 			/>
 

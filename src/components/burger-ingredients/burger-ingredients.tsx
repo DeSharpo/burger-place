@@ -1,37 +1,65 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { setCurrentIngredient } from '../../services/ingredient-card/ingredient-card-slice';
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientCard } from '@components/ingredient-card/ingredient-card';
+import { useAppDispatch, useAppSelector } from '@/services/hooks';
+import type { Ingredient } from '@/types/ingredient';
+
+type TabType = 'bun' | 'sauce' | 'main';
 
 export const BurgerIngredients = () => {
-	const { ingredients } = useSelector((state) => state.burgerIngredients);
-	//console.log(ingredients);
-	const dispatch = useDispatch();
+	const { ingredients } = useAppSelector(
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		(s) => (s as any).burgerIngredients
+	) as {
+		ingredients: Ingredient[];
+	};
+	const dispatch = useAppDispatch();
 
-	const [currentTab, setCurrentTab] = useState('bun');
+	const [currentTab, setCurrentTab] = useState<TabType>('bun');
 
-	const containerRef = useRef(null);
-	const bunRef = useRef(null);
-	const sauceRef = useRef(null);
-	const mainRef = useRef(null);
+	const containerRef = useRef<HTMLDivElement | null>(null);
+	const bunRef = useRef<HTMLHeadingElement | null>(null);
+	const sauceRef = useRef<HTMLHeadingElement | null>(null);
+	const mainRef = useRef<HTMLHeadingElement | null>(null);
 
-	const buns = ingredients.filter((i) => i.type === 'bun');
-	const sauces = ingredients.filter((i) => i.type === 'sauce');
-	const mains = ingredients.filter((i) => i.type === 'main');
+	const buns = useMemo(
+		() => ingredients.filter((i) => i.type === 'bun'),
+		[ingredients]
+	);
+	const sauces = useMemo(
+		() => ingredients.filter((i) => i.type === 'sauce'),
+		[ingredients]
+	);
+	const mains = useMemo(
+		() => ingredients.filter((i) => i.type === 'main'),
+		[ingredients]
+	);
 
-	const handleCardClick = (item) => {
+	const handleCardClick = (item: Ingredient) => {
 		dispatch(setCurrentIngredient(item));
 	};
 
 	const handleScroll = () => {
-		const containerTop = containerRef.current.getBoundingClientRect().top;
+		const containerTop = containerRef.current?.getBoundingClientRect().top;
+		const bunTop = bunRef.current?.getBoundingClientRect().top;
+		const sauceTop = sauceRef.current?.getBoundingClientRect().top;
+		const mainTop = mainRef.current?.getBoundingClientRect().top;
 
-		const distances = [
-			{ type: 'bun', top: bunRef.current.getBoundingClientRect().top },
-			{ type: 'sauce', top: sauceRef.current.getBoundingClientRect().top },
-			{ type: 'main', top: mainRef.current.getBoundingClientRect().top },
+		if (
+			containerTop === undefined ||
+			bunTop === undefined ||
+			sauceTop === undefined ||
+			mainTop === undefined
+		) {
+			return;
+		}
+
+		const distances: Array<{ type: TabType; top: number }> = [
+			{ type: 'bun', top: bunTop },
+			{ type: 'sauce', top: sauceTop },
+			{ type: 'main', top: mainTop },
 		];
 
 		const closest = distances.reduce((prev, curr) =>
@@ -43,7 +71,7 @@ export const BurgerIngredients = () => {
 		setCurrentTab(closest.type);
 	};
 
-	const scrollTo = (type) => {
+	const scrollTo = (type: TabType) => {
 		setCurrentTab(type);
 		const element = {
 			bun: bunRef,

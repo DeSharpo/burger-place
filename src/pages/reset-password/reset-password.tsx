@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, FormEvent, ChangeEvent } from 'react';
 import styles from './reset-password.module.css';
 import {
 	Input,
@@ -9,11 +9,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { request } from '../../utils/request';
 
 export const ResetPassword = () => {
-	const [passwordValue, setPasswordValue] = useState('');
-	const [codeValue, setCodeValue] = useState('');
+	const [passwordValue, setPasswordValue] = useState<string>('');
+	const [codeValue, setCodeValue] = useState<string>('');
 
 	const navigate = useNavigate();
-	const inputRef = useRef(null);
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		if (!localStorage.getItem('allowReset')) {
@@ -21,7 +21,7 @@ export const ResetPassword = () => {
 		}
 	}, [navigate]);
 
-	const onSubmit = (e) => {
+	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		request('/password-reset/reset', {
 			method: 'POST',
@@ -33,6 +33,14 @@ export const ResetPassword = () => {
 		});
 	};
 
+	const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setPasswordValue(e.target.value);
+	};
+
+	const handleCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setCodeValue(e.target.value);
+	};
+
 	return (
 		<div className={styles.centeredWrapper}>
 			<div className={styles.box}>
@@ -41,7 +49,7 @@ export const ResetPassword = () => {
 				</h1>
 				<form className={styles.form} onSubmit={onSubmit}>
 					<PasswordInput
-						onChange={(e) => setPasswordValue(e.target.value)}
+						onChange={handlePasswordChange}
 						value={passwordValue}
 						name='password'
 						placeholder='Введите новый пароль'
@@ -50,7 +58,7 @@ export const ResetPassword = () => {
 					<Input
 						type={'text'}
 						placeholder={'Введите код из письма'}
-						onChange={(e) => setCodeValue(e.target.value)}
+						onChange={handleCodeChange}
 						value={codeValue}
 						name={'name'}
 						error={false}

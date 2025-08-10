@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import styles from './forgot-password.module.css';
 import {
 	EmailInput,
@@ -11,7 +11,7 @@ export const ForgotPassword = () => {
 	const [emailValue, setEmailValue] = useState('');
 	const navigate = useNavigate();
 
-	const onSubmit = (e) => {
+	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		request('/password-reset', {
 			method: 'POST',

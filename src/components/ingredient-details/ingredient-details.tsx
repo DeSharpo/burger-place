@@ -1,12 +1,26 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
 import styles from './ingredient-details.module.css';
 import { useParams } from 'react-router-dom';
+import { useAppSelector } from '@/services/hooks';
+import type { Ingredient } from '@/types/ingredient';
 
-export const IngredientDetails = ({ title }) => {
-	const { currentIngredient } = useSelector((state) => state.ingredientCard);
-	const { ingredients } = useSelector((state) => state.burgerIngredients);
-	const { ingredientId } = useParams();
+interface Props {
+	title?: string;
+}
+
+export const IngredientDetails = ({ title }: Props) => {
+	const { currentIngredient } = useAppSelector(
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		(s) => (s as any).ingredientCard
+	) as {
+		currentIngredient: Ingredient | null;
+	};
+	const { ingredients } = useAppSelector(
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		(s) => (s as any).burgerIngredients
+	) as {
+		ingredients: Ingredient[];
+	};
+	const { ingredientId } = useParams<{ ingredientId: string }>();
 
 	const foundIngredient = ingredients.find((item) => item._id === ingredientId);
 	const ingredient = currentIngredient || foundIngredient;

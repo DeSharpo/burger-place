@@ -1,8 +1,22 @@
-import { useSelector } from 'react-redux';
+import { ReactElement } from 'react';
+import { useAppSelector } from '@/services/hooks';
 import { Navigate, useLocation } from 'react-router-dom';
 
-const ProtectedRoute = ({ onlyUnAuth = false, component }) => {
-	const { user, isAuthChecked } = useSelector((state) => state.user);
+type Props = {
+	onlyUnAuth?: boolean;
+	component: ReactElement;
+};
+
+type UserSlice = {
+	user: unknown;
+	isAuthChecked: boolean;
+};
+
+const ProtectedRoute = ({ onlyUnAuth = false, component }: Props) => {
+	const { user, isAuthChecked } = useAppSelector(
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		(s) => (s as any).user
+	) as UserSlice;
 	const location = useLocation();
 
 	if (!isAuthChecked) {
@@ -27,6 +41,11 @@ const ProtectedRoute = ({ onlyUnAuth = false, component }) => {
 };
 
 export const OnlyAuth = ProtectedRoute;
-export const OnlyUnAuth = ({ component }) => (
+
+type OnlyUnAuthProps = {
+	component: ReactElement;
+};
+
+export const OnlyUnAuth = ({ component }: OnlyUnAuthProps) => (
 	<ProtectedRoute onlyUnAuth={true} component={component} />
 );

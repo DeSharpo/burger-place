@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef, FormEvent, ChangeEvent } from 'react';
 import styles from './registration.module.css';
 import {
 	Input,
@@ -7,19 +7,19 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { registerUser } from '../../services/user/user-slice';
+import { useAppDispatch } from '@/services/hooks';
 
 export const Registration = () => {
-	const [nameValue, setNameValue] = useState('');
-	const [emailValue, setEmailValue] = useState('');
-	const [passwordValue, setPasswordValue] = useState('');
+	const [nameValue, setNameValue] = useState<string>('');
+	const [emailValue, setEmailValue] = useState<string>('');
+	const [passwordValue, setPasswordValue] = useState<string>('');
 
-	const inputRef = useRef(null);
-	const dispatch = useDispatch();
+	const inputRef = useRef<HTMLInputElement>(null);
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
-	const onRegister = (e) => {
+	const onRegister = (e: FormEvent) => {
 		e.preventDefault();
 		dispatch(
 			registerUser({
@@ -32,9 +32,21 @@ export const Registration = () => {
 			.then(() => {
 				navigate('/', { replace: true });
 			})
-			.catch((err) => {
+			.catch((err: Error) => {
 				console.error('Ошибка регистрации:', err.message);
 			});
+	};
+
+	const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setNameValue(e.target.value);
+	};
+
+	const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setEmailValue(e.target.value);
+	};
+
+	const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setPasswordValue(e.target.value);
 	};
 
 	return (
@@ -45,7 +57,7 @@ export const Registration = () => {
 					<Input
 						type={'text'}
 						placeholder={'Имя'}
-						onChange={(e) => setNameValue(e.target.value)}
+						onChange={handleNameChange}
 						value={nameValue}
 						name={'name'}
 						error={false}
@@ -55,14 +67,14 @@ export const Registration = () => {
 						extraClass='mb-6'
 					/>
 					<EmailInput
-						onChange={(e) => setEmailValue(e.target.value)}
+						onChange={handleEmailChange}
 						value={emailValue}
 						name='email'
 						isIcon={false}
 						extraClass='mb-6'
 					/>
 					<PasswordInput
-						onChange={(e) => setPasswordValue(e.target.value)}
+						onChange={handlePasswordChange}
 						value={passwordValue}
 						name='password'
 						extraClass='mb-6'

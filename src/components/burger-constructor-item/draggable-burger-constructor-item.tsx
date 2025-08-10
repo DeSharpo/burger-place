@@ -1,22 +1,35 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { useDispatch } from 'react-redux';
 import styles from './burger-constructor-item.module.css';
 import {
 	moveIngredient,
 	removeIngredient,
 } from '../../services/burger-constructor/burger-constructor-slice';
-import { ingredientPropType } from '@utils/prop-types.js';
 import {
 	ConstructorElement,
 	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import type { ConstructorIngredient } from '@/types/ingredient';
+import { useAppDispatch } from '@/services/hooks';
 
-export const DraggableBurgerConstructorItem = ({ item, index }) => {
-	const ref = useRef(null);
-	const dispatch = useDispatch();
+type Props = {
+	item: ConstructorIngredient;
+	index: number;
+};
 
-	const [{ isDragging }, dragRef] = useDrag({
+type DragItem = {
+	index: number;
+};
+
+type DragCollected = {
+	isDragging: boolean;
+};
+
+export const DraggableBurgerConstructorItem = ({ item, index }: Props) => {
+	const ref = useRef<HTMLDivElement | null>(null);
+	const dispatch = useAppDispatch();
+
+	const [{ isDragging }, dragRef] = useDrag<DragItem, unknown, DragCollected>({
 		type: 'ingredient-sortable',
 		item: { index },
 		collect: (monitor) => ({
@@ -24,7 +37,7 @@ export const DraggableBurgerConstructorItem = ({ item, index }) => {
 		}),
 	});
 
-	const [, dropRef] = useDrop({
+	const [, dropRef] = useDrop<DragItem, void, unknown>({
 		accept: 'ingredient-sortable',
 		hover: (draggedItem) => {
 			if (draggedItem.index !== index) {
@@ -44,7 +57,7 @@ export const DraggableBurgerConstructorItem = ({ item, index }) => {
 			className={styles.constructor_element}
 			style={{ opacity: isDragging ? 0.5 : 1 }}>
 			<div className={styles.icon_wrapper}>
-				<DragIcon />
+				<DragIcon type='primary' />
 			</div>
 			<ConstructorElement
 				text={item.name}
@@ -55,8 +68,4 @@ export const DraggableBurgerConstructorItem = ({ item, index }) => {
 			/>
 		</div>
 	);
-};
-
-DraggableBurgerConstructorItem.propTypes = {
-	item: ingredientPropType.isRequired,
 };

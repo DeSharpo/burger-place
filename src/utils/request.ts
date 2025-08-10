@@ -1,12 +1,23 @@
 import { checkResponse } from './check-response';
 import { BASE_URL } from './config';
 
-export function request(endpoint, options = {}) {
-	return fetch(`${BASE_URL}${endpoint}`, options).then(checkResponse);
+export function request<T = unknown>(
+	endpoint: string,
+	options: RequestInit = {}
+): Promise<T> {
+	return fetch(`${BASE_URL}${endpoint}`, options).then((res) =>
+		checkResponse<T>(res)
+	);
 }
 
-export const refreshToken = () => {
-	return request('/auth/token', {
+type RefreshResponse = {
+	success: boolean;
+	refreshToken: string;
+	accessToken: string;
+};
+
+export const refreshToken = (): Promise<RefreshResponse> => {
+	return request<RefreshResponse>('/auth/token', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json;charset=utf-8',
@@ -24,18 +35,22 @@ export const refreshToken = () => {
 	});
 };
 
-export const fetchWithRefresh = async (endpoint, options) => {
+export const fetchWithRefresh = async <T = unknown>(
+	endpoint: string,
+	options: RequestInit
+): Promise<T> => {
 	try {
-		const res = await request(endpoint, options);
+		const res = await request<T>(endpoint, options);
 		return res;
-	} catch (err) {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	} catch (err: any) {
 		if (err.message === 'jwt expired') {
 			const refreshData = await refreshToken();
 			options.headers = {
 				...(options.headers || {}),
 				authorization: refreshData.accessToken,
 			};
-			const res = await request(endpoint, options);
+			const res = await request<T>(endpoint, options);
 			return res;
 		} else {
 			return Promise.reject(err);
