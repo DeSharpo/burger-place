@@ -1,7 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
+import { Ingredient } from '../../types/ingredient';
 
-const initialState = {
+export interface ConstructorIngredient extends Ingredient {
+	uuid: string;
+}
+
+interface BurgerConstructorState {
+	bun: ConstructorIngredient | null;
+	ingredients: ConstructorIngredient[];
+}
+
+const initialState: BurgerConstructorState = {
 	bun: null,
 	ingredients: [],
 };
@@ -11,7 +21,7 @@ const burgerConstructorSlice = createSlice({
 	initialState,
 	reducers: {
 		addIngredient: {
-			reducer: (state, action) => {
+			reducer: (state, action: PayloadAction<ConstructorIngredient>) => {
 				const item = { ...action.payload };
 				if (item.type === 'bun') {
 					state.bun = item;
@@ -19,16 +29,19 @@ const burgerConstructorSlice = createSlice({
 					state.ingredients.push(item);
 				}
 			},
-			prepare: (ingredient) => {
+			prepare: (ingredient: Ingredient) => {
 				return { payload: { ...ingredient, uuid: uuidv4() } };
 			},
 		},
-		removeIngredient: (state, action) => {
+		removeIngredient: (state, action: PayloadAction<string>) => {
 			state.ingredients = state.ingredients.filter(
 				(item) => item.uuid !== action.payload
 			);
 		},
-		moveIngredient: (state, action) => {
+		moveIngredient: (
+			state,
+			action: PayloadAction<{ fromIndex: number; toIndex: number }>
+		) => {
 			const { fromIndex, toIndex } = action.payload;
 			const updated = [...state.ingredients];
 			const [moved] = updated.splice(fromIndex, 1);

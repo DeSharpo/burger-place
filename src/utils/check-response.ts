@@ -1,4 +1,4 @@
-export function checkResponse<T = unknown>(res: Response): Promise<T> {
+export function checkResponse<T>(res: Response): Promise<T> {
 	if (res.ok) {
 		return res.json();
 	}

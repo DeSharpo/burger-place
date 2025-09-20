@@ -17,8 +17,7 @@ interface ProfileForm {
 
 export const ProfileMain = () => {
 	const dispatch = useAppDispatch();
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const user = useAppSelector((s) => (s as any).user.user);
+	const user = useAppSelector((state) => state.user.user);
 
 	const [form, setForm] = useState<ProfileForm>({
 		name: '',
@@ -46,6 +45,7 @@ export const ProfileMain = () => {
 	};
 
 	const handleCancel = () => {
+		if (!user) return;
 		setForm({ name: user.name, email: user.email, password: '' });
 		setIsDirty(false);
 	};

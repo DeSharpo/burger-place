@@ -30,8 +30,7 @@ export const App = () => {
 
 	const dispatch = useAppDispatch();
 	const { status, error } = useAppSelector(
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		(s) => (s as any).burgerIngredients ?? { status: 'idle', error: null }
+		(store) => store.burgerIngredients ?? { status: 'idle', error: null }
 	);
 
 	const handleModalClose = () => {
