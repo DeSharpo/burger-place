@@ -35,7 +35,12 @@ export const OrderCard = ({ order, onClick }: OrderCardProps) => {
 			to={to}
 			state={{ background: location }}
 			className={styles.link}>
-			<button className={styles.card} onClick={() => onClick(order)}>
+			<div
+				className={styles.card}
+				onClick={() => onClick(order)}
+				role='button'
+				tabIndex={0}
+				onKeyDown={(e) => e.key === 'Escape' && onClick(order)}>
 				<div className={styles.header}>
 					<p className='text text_type_digits-default mb-4'>#{order.number}</p>
 					<FormattedDate className={styles.date} date={new Date(order.date)} />
@@ -62,7 +67,7 @@ export const OrderCard = ({ order, onClick }: OrderCardProps) => {
 						<CurrencyIcon type='primary' />
 					</div>
 				</div>
-			</button>
+			</div>
 		</Link>
 	);
 };
