@@ -3,5 +3,6 @@ export interface Order {
 	date: string;
 	name: string;
 	price: number;
+	status: string;
 	ingredients: string[];
 }

@@ -1,18 +1,33 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-//import { useAppSelector } from '@/services/hooks';
+import { useAppDispatch, useAppSelector } from '@/services/hooks';
+import {
+	fetchOrderByNumber,
+	clearCurrentOrder,
+} from '@/services/order-info/order-info-slice';
 
 export const OrderFeedDetails = () => {
-	//const { orderNumber } = useAppSelector((state) => state.orderDetails);
 	const { orderId } = useParams<{ orderId: string }>();
+	const dispatch = useAppDispatch();
+	const { currentOrder, loading, error } = useAppSelector((s) => s.orderInfo);
 
-	//if (!orderNumber) return null;
+	useEffect(() => {
+		if (orderId) {
+			dispatch(fetchOrderByNumber(Number(orderId)));
+		}
+		return () => {
+			dispatch(clearCurrentOrder());
+		};
+	}, [dispatch, orderId]);
+
+	if (loading) return <p>Загрузка...</p>;
+	if (error) return <p>{error}</p>;
+	if (!currentOrder) return null;
 
 	return (
-		<section>
-			<h1
-				className={
-					'text text_type_main-large mt-10 mb-5 pl-5'
-				}>{`#${orderId}`}</h1>
-		</section>
+		<div>
+			<h2>Заказ #{currentOrder.number}</h2>
+			<p>Статус: {currentOrder.status}</p>
+		</div>
 	);
 };
