@@ -18,6 +18,7 @@ import { ProfileLayout } from '../../pages/profile/profile-layout';
 import { ProfileMain } from '../../pages/profile/profile-main';
 import { ProfileOrders } from '../../pages/profile/profile-orders';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
+import { Feed } from '@/pages/feed/feed';
 
 type LocationState = { background?: Location };
 
@@ -89,6 +90,7 @@ export const App = () => {
 					<Route path='orders' element={<ProfileOrders />} />
 					<Route path='orders/:id' element={<ProfileOrders />} />
 				</Route>
+				<Route path='/feed' element={<Feed />} />
 			</Routes>
 
 			{background && (
