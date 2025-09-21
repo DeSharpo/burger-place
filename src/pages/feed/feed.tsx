@@ -10,7 +10,9 @@ export const Feed = () => {
 				Лента заказов
 			</h1>
 			<main className={`${styles.main} pl-5 pr-5`}>
-				<OrderFeed />
+				<div className={styles.order_feed_container}>
+					<OrderFeed />
+				</div>
 				<OrderStats />
 			</main>
 		</>

@@ -1,7 +1,10 @@
+import { OrderFeed } from '@/components/order-feed/order-feed';
+import styles from './profile.module.css';
+
 export const ProfileOrders = () => {
 	return (
-		<div>
-			<p className='text text_type_main-medium'>История заказов</p>
-		</div>
+		<section className={styles.order_feed_container}>
+			<OrderFeed />
+		</section>
 	);
 };

@@ -1,6 +1,8 @@
 import { OrderCard } from '@components/order-card/order-card';
 import styles from './order-feed.module.css';
-import { useAppSelector } from '@/services/hooks';
+import { useAppDispatch, useAppSelector } from '@/services/hooks';
+import type { Order } from '@/types/order';
+import { setCurrentOrder } from '@/services/order-card/order-card-slice';
 
 const testOrders = [
 	{
@@ -89,22 +91,31 @@ const testOrders = [
 
 export const OrderFeed = () => {
 	const { ingredients } = useAppSelector((state) => state.burgerIngredients);
+	const dispatch = useAppDispatch();
+
+	const handleCardClick = (order: Order) => {
+		dispatch(setCurrentOrder(order));
+	};
 
 	return (
 		<section className={styles.order_feed}>
-			<div className={styles.scroll_container}>
-				{testOrders.map((order) => {
-					const orderWithImages = {
-						...order,
-						ingredients: order.ingredients
-							.map((id) => ingredients.find((ing) => ing._id === id))
-							.filter(Boolean)
-							.map((ing) => ing!.image_mobile),
-					};
+			{testOrders.map((order) => {
+				const orderWithImages = {
+					...order,
+					ingredients: order.ingredients
+						.map((id) => ingredients.find((ing) => ing._id === id))
+						.filter(Boolean)
+						.map((ing) => ing!.image_mobile),
+				};
 
-					return <OrderCard key={order.number} order={orderWithImages} />;
-				})}
-			</div>
+				return (
+					<OrderCard
+						key={order.number}
+						order={orderWithImages}
+						onClick={handleCardClick}
+					/>
+				);
+			})}
 		</section>
 	);
 };

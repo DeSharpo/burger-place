@@ -1,12 +1,6 @@
 .order_feed {
-	display: flex;
-	flex-direction: column;
-	width: 600px;
-	color: var(--text-primary-color);
-	font-family: 'Jet Brains Mono', serif;
-}
-
-.scroll_container {
 	padding-right: 10px;
 	overflow-y: auto;
+	color: var(--text-primary-color);
+	font-family: 'Jet Brains Mono', serif;
 }

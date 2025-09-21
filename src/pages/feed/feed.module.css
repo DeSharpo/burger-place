@@ -12,3 +12,9 @@
 	margin: 0 auto;
 	overflow: hidden;
 }
+
+.order_feed_container {
+	display: flex;
+	flex-direction: column;
+	width: 600px;
+}
