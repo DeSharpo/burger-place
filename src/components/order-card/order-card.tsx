@@ -5,21 +5,26 @@ import {
 	FormattedDate,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useLocation } from 'react-router-dom';
+import { useAppSelector } from '@/services/hooks';
+import { calculateOrderPrice } from '@/utils/calculate-order-price';
 
 interface OrderCardProps {
-	order: {
-		number: number;
-		date: string;
-		name: string;
-		price: number;
-		ingredients: string[];
-	};
+	order: Order;
 	onClick: (order: Order) => void;
 }
 
 export const OrderCard = ({ order, onClick }: OrderCardProps) => {
-	const visibleIngredients = order.ingredients.slice(0, 6);
-	const extra = order.ingredients.length - 6;
+	const { ingredients } = useAppSelector((state) => state.burgerIngredients);
+	const price = calculateOrderPrice(order, ingredients);
+
+	// преобразуем id → картинки
+	const ingredientImages = order.ingredients
+		.map((id) => ingredients.find((ing) => ing._id === id))
+		.filter(Boolean)
+		.map((ing) => ing!.image_mobile);
+
+	const visibleIngredients = ingredientImages.slice(0, 6);
+	const extra = ingredientImages.length - 6;
 
 	const location = useLocation();
 	const orderId = order.number;
@@ -29,43 +34,47 @@ export const OrderCard = ({ order, onClick }: OrderCardProps) => {
 		? `/profile/orders/${orderId}`
 		: `/feed/${orderId}`;
 
+	const statusText =
+		order.status === 'done'
+			? 'Выполнен'
+			: order.status === 'pending'
+				? 'Готовится'
+				: 'Создан';
+
 	return (
 		<Link
 			key={orderId}
 			to={to}
 			state={{ background: location }}
-			className={styles.link}>
-			<div
-				className={styles.card}
-				onClick={() => onClick(order)}
-				role='button'
-				tabIndex={0}
-				onKeyDown={(e) => e.key === 'Escape' && onClick(order)}>
-				<div className={styles.header}>
-					<p className='text text_type_digits-default mb-4'>#{order.number}</p>
-					<FormattedDate className={styles.date} date={new Date(order.date)} />
+			className={`${styles.link} ${styles.card}`}
+			onClick={() => onClick(order)}>
+			<div className={styles.header}>
+				<p className='text text_type_digits-default mb-4'>#{order.number}</p>
+				<FormattedDate
+					className={styles.date}
+					date={new Date(order.createdAt)}
+				/>
+			</div>
+			<h3 className={styles.title}>{order.name}</h3>
+
+			{isProfileOrders && (
+				<p className='text text_type_main-small mb-4'>{statusText}</p>
+			)}
+
+			<div className={styles.footer}>
+				<div className={styles.ingredients}>
+					{visibleIngredients.map((src, i) => (
+						<div key={i} className={styles.ingredient}>
+							<img src={src} alt='' />
+							{i === 5 && extra > 0 && (
+								<div className={styles.overlay}>+{extra}</div>
+							)}
+						</div>
+					))}
 				</div>
-				<h3 className={styles.title}>{order.name}</h3>
-				{isProfileOrders && (
-					<p className='text text_type_main-small mb-4'>Готов</p>
-				)}
-				<div className={styles.footer}>
-					<div className={styles.ingredients}>
-						{visibleIngredients.map((src, i) => (
-							<div key={i} className={styles.ingredient}>
-								<img src={src} alt='' />
-								{i === 5 && extra > 0 && (
-									<div className={styles.overlay}>+{extra}</div>
-								)}
-							</div>
-						))}
-					</div>
-					<div className={styles.price}>
-						<span className={`text text_type_digits-default ${styles.price}`}>
-							{order.price}
-						</span>
-						<CurrencyIcon type='primary' />
-					</div>
+				<div className={styles.price}>
+					<span className='text text_type_digits-default'>{price}</span>
+					<CurrencyIcon type='primary' />
 				</div>
 			</div>
 		</Link>

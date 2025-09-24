@@ -1,34 +1,17 @@
+import { Order } from '@/types/order';
 import styles from './order-stats.module.css';
 
-export const OrderStats = () => {
-	const ready = [
-		'034533',
-		'034532',
-		'034530',
-		'034527',
-		'034525',
-		'034533',
-		'034532',
-		'034530',
-		'034527',
-		'034525',
-		'034',
-		'32',
-		'0330',
-		'03427',
-		'025',
-	];
-	const pending = [
-		'034538',
-		'034541',
-		'034542',
-		'034538',
-		'034541',
-		'034542',
-		'034538',
-		'034541',
-		'034542',
-	];
+interface OrderStatsProps {
+	total: number;
+	totalToday: number;
+	orders: Order[];
+}
+
+export const OrderStats = ({ total, totalToday, orders }: OrderStatsProps) => {
+	const ready = orders.filter((o) => o.status === 'done').map((o) => o.number);
+	const pending = orders
+		.filter((o) => o.status === 'pending')
+		.map((o) => o.number);
 
 	const readyCol1 = ready.slice(0, 6);
 	const readyCol2 = ready.slice(6, 12);
@@ -90,14 +73,16 @@ export const OrderStats = () => {
 				<p className={`text text_type_main-small ${styles.value}`}>
 					Выполнено за все время:
 				</p>
-				<p className={`text text_type_digits-large ${styles.glow}`}>28 752</p>
+				<p className={`text text_type_digits-large ${styles.glow}`}>{total}</p>
 			</div>
 
 			<div>
 				<p className={`text text_type_main-small ${styles.value}`}>
 					Выполнено за сегодня:
 				</p>
-				<p className={`text text_type_digits-large ${styles.glow}`}>138</p>
+				<p className={`text text_type_digits-large ${styles.glow}`}>
+					{totalToday}
+				</p>
 			</div>
 		</section>
 	);
