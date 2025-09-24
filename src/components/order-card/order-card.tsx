@@ -17,7 +17,6 @@ export const OrderCard = ({ order, onClick }: OrderCardProps) => {
 	const { ingredients } = useAppSelector((state) => state.burgerIngredients);
 	const price = calculateOrderPrice(order, ingredients);
 
-	// преобразуем id → картинки
 	const ingredientImages = order.ingredients
 		.map((id) => ingredients.find((ing) => ing._id === id))
 		.filter(Boolean)
@@ -58,7 +57,12 @@ export const OrderCard = ({ order, onClick }: OrderCardProps) => {
 			<h3 className={styles.title}>{order.name}</h3>
 
 			{isProfileOrders && (
-				<p className='text text_type_main-small mb-4'>{statusText}</p>
+				<p
+					className={`text text_type_main-small mb-4 ${
+						statusText === 'Выполнен' ? styles.status_done : ''
+					}`}>
+					{statusText}
+				</p>
 			)}
 
 			<div className={styles.footer}>

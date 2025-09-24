@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 
 export const ProfileOrders = () => {
 	const dispatch = useAppDispatch();
-	const { orders } = useAppSelector((s) => s.profileOrders);
+	const { orders } = useAppSelector((store) => store.profileOrders);
 	const token = localStorage.getItem('accessToken')?.replace('Bearer ', '');
 
 	useEffect(() => {

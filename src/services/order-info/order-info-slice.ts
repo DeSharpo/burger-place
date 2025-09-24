@@ -16,7 +16,7 @@ const initialState: OrderInfoState = {
 
 export const fetchOrderByNumber = createAsyncThunk<
 	Order,
-	number,
+	string,
 	{ rejectValue: string }
 >('orderInfo/fetchOrderByNumber', async (number, thunkAPI) => {
 	try {

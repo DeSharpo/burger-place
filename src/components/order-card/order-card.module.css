@@ -102,3 +102,7 @@
 	color: white !important;
 	text-decoration: none;
 }
+
+.status_done {
+	color: #00cccc;
+}

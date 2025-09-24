@@ -43,7 +43,9 @@ const profileOrdersSlice = createSlice({
 				totalToday: number;
 			}>
 		) => {
-			state.orders = action.payload.orders;
+			state.orders = [...action.payload.orders].sort(
+				(a, b) => b.number - a.number
+			);
 			state.total = action.payload.total;
 			state.totalToday = action.payload.totalToday;
 		},

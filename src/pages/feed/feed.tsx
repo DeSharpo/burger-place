@@ -10,7 +10,9 @@ import { useAppDispatch, useAppSelector } from '@/services/hooks';
 
 export const Feed = () => {
 	const dispatch = useAppDispatch();
-	const { orders, total, totalToday } = useAppSelector((s) => s.orderFeed);
+	const { orders, total, totalToday } = useAppSelector(
+		(store) => store.orderFeed
+	);
 
 	useEffect(() => {
 		dispatch(orderFeedConnect('wss://norma.nomoreparties.space/orders/all'));

@@ -21,6 +21,7 @@ import { ProfileOrders } from '../../pages/profile/profile-orders';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
 import { Feed } from '@/pages/feed/feed';
 import { OrderFeedDetails } from '../order-feed-details/order-feed-details.js';
+import { OrderFeedTitle } from '../order-feed-details/order-feed-details-title.js';
 
 type LocationState = { background?: Location };
 
@@ -95,14 +96,17 @@ export const App = () => {
 					element={<OnlyAuth component={<ProfileLayout />} />}>
 					<Route index element={<ProfileMain />} />
 					<Route path='orders' element={<ProfileOrders />} />
-					<Route path='orders/:orderId' element={<OrderFeedDetails />} />
+					<Route
+						path='orders/:orderId'
+						element={<OrderFeedDetails title={<OrderFeedTitle />} />}
+					/>
 				</Route>
 				<Route path='/feed' element={<Feed />} />
 				<Route
 					path='/feed/:orderId'
 					element={
 						<div className={styles.centered_wrapper}>
-							<OrderFeedDetails />
+							<OrderFeedDetails title={<OrderFeedTitle />} />
 						</div>
 					}
 				/>
@@ -123,7 +127,7 @@ export const App = () => {
 					<Route
 						path='/feed/:orderId'
 						element={
-							<Modal onClose={handleModalOrderClose}>
+							<Modal onClose={handleModalOrderClose} title={<OrderFeedTitle />}>
 								<OrderFeedDetails />
 							</Modal>
 						}
@@ -131,7 +135,7 @@ export const App = () => {
 					<Route
 						path='profile/orders/:orderId'
 						element={
-							<Modal onClose={handleModalOrderClose}>
+							<Modal onClose={handleModalOrderClose} title={<OrderFeedTitle />}>
 								<OrderFeedDetails />
 							</Modal>
 						}
