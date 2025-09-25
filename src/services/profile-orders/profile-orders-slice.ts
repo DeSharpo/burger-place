@@ -59,4 +59,13 @@ export const {
 	wsGetOrders,
 } = profileOrdersSlice.actions;
 
+export const profileOrdersActions = {
+	connect: profileOrdersConnect.type,
+	disconnect: profileOrdersDisconnect.type,
+	onOpen: wsConnectionSuccess,
+	onClose: wsConnectionClosed,
+	onError: wsConnectionError,
+	onMessage: wsGetOrders,
+};
+
 export default profileOrdersSlice.reducer;

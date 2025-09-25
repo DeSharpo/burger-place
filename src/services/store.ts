@@ -6,14 +6,17 @@ import ingredientCardReducer from './ingredient-card/ingredient-card-slice';
 import orderDetailsReducer from './order-details/order-details-slice';
 import userReducer from './user/user-slice';
 import orderCardReducer from './order-card/order-card-slice';
-import orderFeedReducer from './order-feed/order-feed-slice';
-import profileOrdersReducer from './profile-orders/profile-orders-slice';
+import orderFeedReducer, {
+	orderFeedActions,
+} from './order-feed/order-feed-slice';
+import profileOrdersReducer, {
+	profileOrdersActions,
+} from './profile-orders/profile-orders-slice';
 import orderInfoReducer from './order-info/order-info-slice';
-import { createOrderFeedMiddleware } from './order-feed/order-feed-middleware';
-import { createProfileOrdersMiddleware } from './profile-orders/profile-orders-middleware';
+import { createSocketMiddleware } from './middleware/socket-middleware';
 
-const orderFeedMiddleware = createOrderFeedMiddleware();
-const profileOrdersMiddleware = createProfileOrdersMiddleware();
+const orderFeedMiddleware = createSocketMiddleware(orderFeedActions);
+const profileOrdersMiddleware = createSocketMiddleware(profileOrdersActions);
 
 export const store = configureStore({
 	reducer: {

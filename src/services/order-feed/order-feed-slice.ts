@@ -57,4 +57,13 @@ export const {
 	wsGetOrders,
 } = orderFeedSlice.actions;
 
+export const orderFeedActions = {
+	connect: orderFeedConnect.type,
+	disconnect: orderFeedDisconnect.type,
+	onOpen: wsConnectionSuccess,
+	onClose: wsConnectionClosed,
+	onError: wsConnectionError,
+	onMessage: wsGetOrders,
+};
+
 export default orderFeedSlice.reducer;
