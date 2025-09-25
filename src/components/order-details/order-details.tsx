@@ -1,19 +1,10 @@
 import styles from './order-details.module.css';
 import { useAppSelector } from '@/services/hooks';
 
-type OrderStatus = 'idle' | 'loading' | 'succeeded' | 'failed';
-
-type OrderDetailsSlice = {
-	orderNumber: number | null;
-	error: string | null;
-	status: OrderStatus;
-};
-
 export const OrderDetails = () => {
 	const { orderNumber, error, status } = useAppSelector(
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		(s) => (s as any).orderDetails
-	) as OrderDetailsSlice;
+		(state) => state.orderDetails
+	);
 
 	if (status === 'loading') {
 		return <p className='text text_type_main-medium'>Создание заказа...</p>;

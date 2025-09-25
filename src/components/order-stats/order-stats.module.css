@@ -1,0 +1,51 @@
+.order_stats {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+	width: 600px;
+	padding-bottom: 20px;
+	overflow-y: auto;
+	color: var(--text-primary-color);
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 24px;
+	height: 200px;
+	margin-bottom: 50px;
+}
+
+.value {
+	margin-bottom: 12px;
+	font-size: 22px;
+}
+
+.ready {
+	color: #00cccc;
+}
+
+.ordersGrid {
+	display: grid;
+	grid-template-columns: repeat(2, auto);
+	gap: 8px 24px;
+	overflow: hidden;
+}
+
+.glow {
+	color: #ffffff;
+	text-shadow:
+		0 0 8px #4c4cff,
+		0 0 16px #4c4cff;
+}
+
+.columns {
+	display: flex;
+	gap: 24px;
+}
+
+.column {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}

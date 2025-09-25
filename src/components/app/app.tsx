@@ -8,6 +8,7 @@ import { Preloader } from '../preloader/preloader';
 import { Home } from '../../pages/home/home';
 import { fetchIngredients } from '../../services/burger-ingredients/burger-ingredients-slice';
 import { clearCurrentIngredient } from '../../services/ingredient-card/ingredient-card-slice';
+import { clearCurrentOrder } from '@/services/order-card/order-card-slice.js';
 import { Login } from '../../pages/login/login';
 import { Registration } from '../../pages/registration/registration';
 import { ForgotPassword } from '../../pages/forgot-password/forgot-password';
@@ -18,6 +19,9 @@ import { ProfileLayout } from '../../pages/profile/profile-layout';
 import { ProfileMain } from '../../pages/profile/profile-main';
 import { ProfileOrders } from '../../pages/profile/profile-orders';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
+import { Feed } from '@/pages/feed/feed';
+import { OrderFeedDetails } from '../order-feed-details/order-feed-details.js';
+import { OrderFeedTitle } from '../order-feed-details/order-feed-details-title.js';
 
 type LocationState = { background?: Location };
 
@@ -30,12 +34,16 @@ export const App = () => {
 
 	const dispatch = useAppDispatch();
 	const { status, error } = useAppSelector(
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		(s) => (s as any).burgerIngredients ?? { status: 'idle', error: null }
+		(store) => store.burgerIngredients ?? { status: 'idle', error: null }
 	);
 
-	const handleModalClose = () => {
+	const handleModalIngredientClose = () => {
 		dispatch(clearCurrentIngredient());
+		navigate(-1);
+	};
+
+	const handleModalOrderClose = () => {
+		dispatch(clearCurrentOrder());
 		navigate(-1);
 	};
 
@@ -88,8 +96,20 @@ export const App = () => {
 					element={<OnlyAuth component={<ProfileLayout />} />}>
 					<Route index element={<ProfileMain />} />
 					<Route path='orders' element={<ProfileOrders />} />
-					<Route path='orders/:id' element={<ProfileOrders />} />
+					<Route
+						path='orders/:orderId'
+						element={<OrderFeedDetails title={<OrderFeedTitle />} />}
+					/>
 				</Route>
+				<Route path='/feed' element={<Feed />} />
+				<Route
+					path='/feed/:orderId'
+					element={
+						<div className={styles.centered_wrapper}>
+							<OrderFeedDetails title={<OrderFeedTitle />} />
+						</div>
+					}
+				/>
 			</Routes>
 
 			{background && (
@@ -97,8 +117,26 @@ export const App = () => {
 					<Route
 						path='/ingredients/:ingredientId'
 						element={
-							<Modal onClose={handleModalClose} title={'Детали ингредиента'}>
+							<Modal
+								onClose={handleModalIngredientClose}
+								title={'Детали ингредиента'}>
 								<IngredientDetails />
+							</Modal>
+						}
+					/>
+					<Route
+						path='/feed/:orderId'
+						element={
+							<Modal onClose={handleModalOrderClose} title={<OrderFeedTitle />}>
+								<OrderFeedDetails />
+							</Modal>
+						}
+					/>
+					<Route
+						path='profile/orders/:orderId'
+						element={
+							<Modal onClose={handleModalOrderClose} title={<OrderFeedTitle />}>
+								<OrderFeedDetails />
 							</Modal>
 						}
 					/>

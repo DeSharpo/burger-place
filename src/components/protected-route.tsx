@@ -7,16 +7,8 @@ type Props = {
 	component: ReactElement;
 };
 
-type UserSlice = {
-	user: unknown;
-	isAuthChecked: boolean;
-};
-
 const ProtectedRoute = ({ onlyUnAuth = false, component }: Props) => {
-	const { user, isAuthChecked } = useAppSelector(
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		(s) => (s as any).user
-	) as UserSlice;
+	const { user, isAuthChecked } = useAppSelector((store) => store.user);
 	const location = useLocation();
 
 	if (!isAuthChecked) {

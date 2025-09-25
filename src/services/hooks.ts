@@ -1,10 +1,5 @@
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
+import type { RootState, AppDispatch } from './store';
 
-export type RootState = unknown;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type AppDispatch = any;
-
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-export const useAppSelector: TypedUseSelectorHook<RootState> =
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	useSelector as any;
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

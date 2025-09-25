@@ -18,20 +18,13 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
-import type { ConstructorIngredient } from '@/types/ingredient';
+import { Ingredient } from '@/types/ingredient';
 
 export const BurgerConstructor = () => {
 	const { bun, ingredients } = useAppSelector(
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		(s) => (s as any).burgerConstructor
-	) as {
-		bun: ConstructorIngredient | null;
-		ingredients: ConstructorIngredient[];
-	};
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const user = useAppSelector((s) => (s as any).user.user) as unknown as {
-		_id?: string;
-	} | null;
+		(state) => state.burgerConstructor
+	);
+	const user = useAppSelector((state) => state.user.user);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -51,8 +44,8 @@ export const BurgerConstructor = () => {
 		}
 
 		const ids = [bun._id, ...ingredients.map((i) => i._id), bun._id];
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		dispatch(createOrder(ids)).then((res: any) => {
+
+		dispatch(createOrder(ids)).then((res) => {
 			if (createOrder.fulfilled.match(res)) {
 				dispatch(clearConstructor());
 			}
@@ -63,7 +56,7 @@ export const BurgerConstructor = () => {
 
 	const [, dropRef] = useDrop({
 		accept: 'ingredient',
-		drop: (item) => {
+		drop: (item: Ingredient) => {
 			dispatch(addIngredient(item));
 		},
 	});

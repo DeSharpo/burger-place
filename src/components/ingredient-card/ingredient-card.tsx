@@ -16,10 +16,7 @@ interface Props {
 export const IngredientCard = ({ item, onClick }: Props) => {
 	const location = useLocation();
 	const ingredientId = item['_id'];
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const { counters } = useAppSelector((s) => (s as any).burgerIngredients) as {
-		counters: Record<string, number>;
-	};
+	const { counters } = useAppSelector((state) => state.burgerIngredients);
 	const count = counters[item._id] || 0;
 
 	const [{ isDragging }, dragRef] = useDrag<

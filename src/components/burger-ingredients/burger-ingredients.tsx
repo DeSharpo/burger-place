@@ -9,12 +9,7 @@ import type { Ingredient } from '@/types/ingredient';
 type TabType = 'bun' | 'sauce' | 'main';
 
 export const BurgerIngredients = () => {
-	const { ingredients } = useAppSelector(
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		(s) => (s as any).burgerIngredients
-	) as {
-		ingredients: Ingredient[];
-	};
+	const { ingredients } = useAppSelector((state) => state.burgerIngredients);
 	const dispatch = useAppDispatch();
 
 	const [currentTab, setCurrentTab] = useState<TabType>('bun');

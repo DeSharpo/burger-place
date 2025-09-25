@@ -1,0 +1,6 @@
+.order_feed {
+	padding-right: 10px;
+	overflow-y: auto;
+	color: var(--text-primary-color);
+	font-family: 'Jet Brains Mono', serif;
+}

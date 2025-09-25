@@ -1,7 +1,7 @@
 import { checkResponse } from './check-response';
 import { BASE_URL } from './config';
 
-export function request<T = unknown>(
+export function request<T>(
 	endpoint: string,
 	options: RequestInit = {}
 ): Promise<T> {
@@ -42,9 +42,8 @@ export const fetchWithRefresh = async <T = unknown>(
 	try {
 		const res = await request<T>(endpoint, options);
 		return res;
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	} catch (err: any) {
-		if (err.message === 'jwt expired') {
+	} catch (err: unknown) {
+		if (err instanceof Error && err.message === 'jwt expired') {
 			const refreshData = await refreshToken();
 			options.headers = {
 				...(options.headers || {}),
