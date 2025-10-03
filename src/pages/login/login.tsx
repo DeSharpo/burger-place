@@ -6,14 +6,14 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '@/services/hooks';
 import { loginUser } from '../../services/user/user-slice';
 
 export const Login = () => {
 	const [emailValue, setEmailValue] = useState<string>('');
 	const [passwordValue, setPasswordValue] = useState<string>('');
 
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const location = useLocation();
 
