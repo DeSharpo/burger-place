@@ -35,7 +35,7 @@ interface OrderDetailsState {
 	error: string | null;
 }
 
-const initialState: OrderDetailsState = {
+export const initialState: OrderDetailsState = {
 	orderNumber: null,
 	status: 'idle',
 	error: null,
