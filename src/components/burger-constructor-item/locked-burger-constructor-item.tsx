@@ -11,7 +11,9 @@ type Props = {
 
 export const LockedBurgerConstructorItem = ({ item, type, text }: Props) => {
 	return (
-		<div className={styles.constructor_element}>
+		<div
+			className={styles.constructor_element}
+			data-testid='locked-constructor-element'>
 			<div className={styles.icon_wrapper}></div>
 			<ConstructorElement
 				text={text}

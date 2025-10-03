@@ -86,7 +86,10 @@ export const BurgerConstructor = () => {
 	}, [bun, ingredients, dispatch]);
 
 	return (
-		<section className={styles.burger_constructor} ref={dropRef}>
+		<section
+			className={styles.burger_constructor}
+			ref={dropRef}
+			data-testid='burger-constructor'>
 			{bun ? (
 				<LockedBurgerConstructorItem
 					item={bun}
@@ -126,7 +129,10 @@ export const BurgerConstructor = () => {
 					<span className='text text_type_digits-medium'>{summ}</span>
 					<CurrencyIcon type={'primary'} />
 				</div>
-				<Button htmlType='button' onClick={handleOrderClick}>
+				<Button
+					htmlType='button'
+					onClick={handleOrderClick}
+					data-testid='order-button'>
 					Оформить заказ
 				</Button>
 			</div>

@@ -41,6 +41,7 @@ export const IngredientCard = ({ item, onClick }: Props) => {
 				ref={dragRef}
 				onClick={() => onClick(item)}
 				className={styles.card}
+				data-testid='ingredient-card'
 				style={{ opacity: isDragging ? 0.5 : 1 }}
 				role='button'
 				tabIndex={0}

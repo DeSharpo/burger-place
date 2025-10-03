@@ -25,7 +25,11 @@ export const OrderDetails = () => {
 
 	return (
 		<div className={styles.container}>
-			<p className='text text_type_digits-large mb-8'>{orderNumber}</p>
+			<p
+				className='text text_type_digits-large mb-8'
+				data-testid='order-number'>
+				{orderNumber}
+			</p>
 			<p className='text text_type_main-medium mb-15'>идентификатор заказа</p>
 			<img src='/done.png' alt='Заказ принят' className={styles.icon} />
 			<p className='text text_type_main-default mb-2'>

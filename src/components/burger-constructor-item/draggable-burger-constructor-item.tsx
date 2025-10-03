@@ -55,6 +55,7 @@ export const DraggableBurgerConstructorItem = ({ item, index }: Props) => {
 		<div
 			ref={ref}
 			className={styles.constructor_element}
+			data-testid='draggable-constructor-element'
 			style={{ opacity: isDragging ? 0.5 : 1 }}>
 			<div className={styles.icon_wrapper}>
 				<DragIcon type='primary' />
