@@ -5,7 +5,7 @@ interface OrderCardState {
 	order: Order | null;
 }
 
-const initialState: OrderCardState = {
+export const initialState: OrderCardState = {
 	order: null,
 };
 

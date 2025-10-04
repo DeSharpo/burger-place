@@ -29,7 +29,7 @@ interface BurgerIngredientsState {
 	counters: Record<string, number>;
 }
 
-const initialState: BurgerIngredientsState = {
+export const initialState: BurgerIngredientsState = {
 	ingredients: [],
 	status: 'idle',
 	error: null,
